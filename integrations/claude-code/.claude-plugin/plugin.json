@@ -1,0 +1,63 @@
+{
+  "name": "actrouter",
+  "displayName": "ActRouter",
+  "version": "0.2.0",
+  "description": "Routes work to the right model: routes each of your prompts and every subagent automatically, and recommends models for LLM-calling code you write.",
+  "author": {
+    "name": "ActRouter contributors"
+  },
+  "homepage": "https://github.com/jzhng105/actrouter-client",
+  "repository": "https://github.com/jzhng105/actrouter-client",
+  "license": "MIT",
+  "keywords": [
+    "model-routing",
+    "llm-router",
+    "subagents",
+    "mcp"
+  ],
+  "userConfig": {
+    "api_key": {
+      "type": "string",
+      "title": "ActRouter API key",
+      "description": "Your ActRouter API key (starts with ar_live_). Routing runs on the hosted ActRouter API, which needs it.",
+      "sensitive": true,
+      "default": ""
+    },
+    "router_url": {
+      "type": "string",
+      "title": "ActRouter URL (advanced)",
+      "description": "Leave empty for the hosted ActRouter API. Set it only for a dedicated deployment you were given. The first 600 characters of each prompt are sent to the API for routing (prompt_routing off sends none).",
+      "default": ""
+    },
+    "subagent_routing": {
+      "type": "string",
+      "title": "Automatic subagent routing",
+      "description": "on: pick a model for every subagent started without one. off: only route when asked (MCP tools).",
+      "default": "on"
+    },
+    "prompt_routing": {
+      "type": "string",
+      "title": "Prompt routing",
+      "description": "What to do when your prompt fits another model than the session's. delegate: Claude does substantial work on that model through a subagent. advise: only tell you (/model switches). off: do not route prompts.",
+      "default": "delegate"
+    },
+    "preference": {
+      "type": "string",
+      "title": "Routing preference",
+      "description": "How automatic prompt and subagent routing trades quality against cost: quality, balanced or cost.",
+      "default": "balanced"
+    },
+    "baseline_model": {
+      "type": "string",
+      "title": "Baseline model",
+      "description": "The model your subagents would use without ActRouter, for measuring savings (e.g. sonnet). Leave empty to detect it: CLAUDE_CODE_SUBAGENT_MODEL, the subagent's definition, else this session's model.",
+      "default": ""
+    },
+    "ledger": {
+      "type": "string",
+      "title": "Routing ledger",
+      "description": "File that records routing decisions and their outcomes (no prompts or task text), for `actrouter-route report`. Leave empty for ~/.actrouter/routing-ledger.jsonl, or set off.",
+      "default": ""
+    }
+  }
+}

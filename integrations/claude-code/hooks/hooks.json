@@ -1,0 +1,81 @@
+{
+  "description": "Route each user prompt and each subagent started without a model, and record the model that would otherwise have run and what really ran, background subagents included (ActRouter).",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx",
+            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostModelSwitch": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx",
+            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx",
+            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "timeout": 30,
+            "statusMessage": "ActRouter: routing the request"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx",
+            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "timeout": 30,
+            "statusMessage": "ActRouter: choosing a model for the subagent"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx",
+            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uvx",
+            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

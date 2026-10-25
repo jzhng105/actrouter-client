@@ -1,0 +1,18 @@
+## Model routing (ActRouter)
+
+The `actrouter` MCP server recommends which model fits a piece of work.
+
+- When the user makes a new request that needs tool calls, call `route_task`
+  on it first: one or two sentences on the kind of work, and your own model
+  as `current_model`. If its `host_model` differs from your model, do the
+  work in a sub-agent with that `model` and relay the result. Skip this for
+  follow-ups such as "yes, go ahead".
+- Before spawning a sub-agent for a sizeable task, call `route_task` with a
+  one or two sentence description of the kind of work (no code, logs,
+  secrets or file contents) and pass its `host_model` as the sub-agent's
+  `model`. Use `preference: "quality"` for hard debugging, design or
+  security work, and `"cost"` for bulk mechanical work.
+- When writing code that calls an LLM, call `route_function` (Python) or
+  `route_function_metadata` (other languages) on the function and use the
+  returned `model` in the code.
+- A model the user named explicitly always wins.

@@ -1,0 +1,3326 @@
+{
+ "GET /v1/models null": {
+  "status": 200,
+  "body": {
+   "data": [
+    {
+     "id": "gpt-5.5",
+     "family": "openai",
+     "size_tier": 3,
+     "context_window": 1050000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "math",
+      "multimodal",
+      "planning",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 5.0,
+     "output_price_per_mtok": 30.0,
+     "cache_read_price_per_mtok": 0.5,
+     "context_tiers": [
+      {
+       "above_tokens": 272000,
+       "input_price_per_mtok": 10.0,
+       "output_price_per_mtok": 45.0,
+       "cache_read_price_per_mtok": 1.0
+      }
+     ],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gpt-5.4-mini",
+     "family": "openai",
+     "size_tier": 2,
+     "context_window": 272000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "code_generation",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.75,
+     "output_price_per_mtok": 4.5,
+     "cache_read_price_per_mtok": 0.075,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gpt-5-mini",
+     "family": "openai",
+     "size_tier": 1,
+     "context_window": 272000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "classification",
+      "extraction",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.25,
+     "output_price_per_mtok": 2.0,
+     "cache_read_price_per_mtok": 0.025,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gpt-5.6",
+     "family": "openai",
+     "size_tier": 3,
+     "context_window": 922000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "math",
+      "multimodal",
+      "planning",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 4.0,
+     "output_price_per_mtok": 20.0,
+     "cache_read_price_per_mtok": 0.4,
+     "context_tiers": [
+      {
+       "above_tokens": 272000,
+       "input_price_per_mtok": 8.0,
+       "output_price_per_mtok": 30.0,
+       "cache_read_price_per_mtok": 0.8
+      }
+     ],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-opus-4-7",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 5.0,
+     "output_price_per_mtok": 25.0,
+     "cache_read_price_per_mtok": 0.5,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-sonnet-4-6",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "qa",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 3.0,
+     "output_price_per_mtok": 15.0,
+     "cache_read_price_per_mtok": 0.3,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-haiku-4-5",
+     "family": "anthropic",
+     "size_tier": 2,
+     "context_window": 200000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "classification",
+      "code_generation",
+      "extraction",
+      "summarization"
+     ],
+     "input_price_per_mtok": 1.0,
+     "output_price_per_mtok": 5.0,
+     "cache_read_price_per_mtok": 0.1,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-haiku-5-5",
+     "family": "anthropic",
+     "size_tier": 1,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "classification",
+      "code_generation",
+      "extraction",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.1,
+     "output_price_per_mtok": 0.5,
+     "cache_read_price_per_mtok": 0.01,
+     "context_tiers": [
+      {
+       "above_tokens": 100000,
+       "input_price_per_mtok": 0.5,
+       "output_price_per_mtok": 2.5,
+       "cache_read_price_per_mtok": 0.05
+      }
+     ],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-opus-4-8",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 5.0,
+     "output_price_per_mtok": 25.0,
+     "cache_read_price_per_mtok": 0.5,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-opus-5",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 5.0,
+     "output_price_per_mtok": 25.0,
+     "cache_read_price_per_mtok": 0.5,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-opus-5-5",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 4.0,
+     "output_price_per_mtok": 20.0,
+     "cache_read_price_per_mtok": 0.2,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-sonnet-5",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "qa",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.0,
+     "output_price_per_mtok": 10.0,
+     "cache_read_price_per_mtok": 0.2,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "claude-sonnet-5-5",
+     "family": "anthropic",
+     "size_tier": 3,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "long_context",
+      "qa",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.0,
+     "output_price_per_mtok": 10.0,
+     "cache_read_price_per_mtok": 0.1,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-3-flash-preview",
+     "family": "google",
+     "size_tier": 1,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "long_context",
+      "multimodal",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.5,
+     "output_price_per_mtok": 3.0,
+     "cache_read_price_per_mtok": 0.05,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-2.5-pro",
+     "family": "google",
+     "size_tier": 2,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "long_context",
+      "multimodal",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.25,
+     "output_price_per_mtok": 10.0,
+     "cache_read_price_per_mtok": 0.125,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 2.5,
+       "output_price_per_mtok": 15.0,
+       "cache_read_price_per_mtok": 0.25
+      }
+     ],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-3.5-flash",
+     "family": "google",
+     "size_tier": 2,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "long_context",
+      "multimodal",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 1.5,
+     "output_price_per_mtok": 9.0,
+     "cache_read_price_per_mtok": 0.15,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-3.6-flash",
+     "family": "google",
+     "size_tier": 1,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "long_context",
+      "multimodal",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.75,
+     "output_price_per_mtok": 3.75,
+     "cache_read_price_per_mtok": 0.075,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-3.7-flash",
+     "family": "google",
+     "size_tier": 1,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "long_context",
+      "multimodal",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.75,
+     "output_price_per_mtok": 3.75,
+     "cache_read_price_per_mtok": 0.075,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-3.8-flash",
+     "family": "google",
+     "size_tier": 1,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "long_context",
+      "multimodal",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.75,
+     "output_price_per_mtok": 3.75,
+     "cache_read_price_per_mtok": 0.075,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "gemini-3.1-pro-preview",
+     "family": "google",
+     "size_tier": 3,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "long_context",
+      "math",
+      "multimodal",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.0,
+     "output_price_per_mtok": 12.0,
+     "cache_read_price_per_mtok": 0.2,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 4.0,
+       "output_price_per_mtok": 18.0,
+       "cache_read_price_per_mtok": 0.4
+      }
+     ],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "deepseek-coder",
+     "family": "deepseek",
+     "size_tier": 1,
+     "context_window": 128000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "code_completion",
+      "code_generation",
+      "fill_in_middle"
+     ],
+     "input_price_per_mtok": 0.14,
+     "output_price_per_mtok": 0.28,
+     "cache_read_price_per_mtok": 0.014,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "mistral-large-latest",
+     "family": "mistral",
+     "size_tier": 1,
+     "context_window": 262144,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "function_calling",
+      "multilingual",
+      "qa",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.5,
+     "output_price_per_mtok": 1.5,
+     "cache_read_price_per_mtok": 0.05,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "mistral-medium-latest",
+     "family": "mistral",
+     "size_tier": 1,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "code_generation",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.5,
+     "output_price_per_mtok": 7.5,
+     "cache_read_price_per_mtok": 0.15,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "mistral-small-latest",
+     "family": "mistral",
+     "size_tier": 0,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "classification",
+      "extraction",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.15,
+     "output_price_per_mtok": 0.6,
+     "cache_read_price_per_mtok": 0.015,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "command-a-03-2025",
+     "family": "cohere",
+     "size_tier": 3,
+     "context_window": 256000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "multilingual",
+      "rag",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.5,
+     "output_price_per_mtok": 10.0,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "command-r-plus-08-2024",
+     "family": "cohere",
+     "size_tier": 3,
+     "context_window": 128000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "multilingual",
+      "rag",
+      "reasoning",
+      "tool_use"
+     ],
+     "input_price_per_mtok": 2.5,
+     "output_price_per_mtok": 10.0,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "command-r-08-2024",
+     "family": "cohere",
+     "size_tier": 1,
+     "context_window": 128000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "qa",
+      "rag",
+      "summarization",
+      "tool_use"
+     ],
+     "input_price_per_mtok": 0.15,
+     "output_price_per_mtok": 0.6,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "llama-4-maverick",
+     "family": "meta",
+     "size_tier": 1,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "long_context",
+      "multimodal",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.2,
+     "output_price_per_mtok": 0.6,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "llama-4-scout",
+     "family": "meta",
+     "size_tier": 0,
+     "context_window": 10000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "extraction",
+      "long_context",
+      "multimodal",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.1,
+     "output_price_per_mtok": 0.3,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "llama-3.3-70b-instruct",
+     "family": "meta",
+     "size_tier": 2,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "chat",
+      "coding",
+      "qa",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.71,
+     "output_price_per_mtok": 0.71,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "qwen3-next-80b-a3b-instruct",
+     "family": "alibaba",
+     "size_tier": 1,
+     "context_window": 262144,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "chat",
+      "code_generation",
+      "long_context",
+      "multilingual",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.15,
+     "output_price_per_mtok": 1.2,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "qwen3-vl-235b-a22b-instruct",
+     "family": "alibaba",
+     "size_tier": 1,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "extraction",
+      "multimodal",
+      "reasoning",
+      "vision_qa"
+     ],
+     "input_price_per_mtok": 0.4,
+     "output_price_per_mtok": 1.6,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "qwen-max",
+     "family": "alibaba",
+     "size_tier": 3,
+     "context_window": 30720,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "code_generation",
+      "multilingual",
+      "qa",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.6,
+     "output_price_per_mtok": 6.4,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "kimi-k2.5",
+     "family": "moonshot",
+     "size_tier": 2,
+     "context_window": 262144,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "coding",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.6,
+     "output_price_per_mtok": 3.0,
+     "cache_read_price_per_mtok": 0.1,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "kimi-k2.6",
+     "family": "moonshot",
+     "size_tier": 2,
+     "context_window": 262144,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "coding",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.95,
+     "output_price_per_mtok": 4.0,
+     "cache_read_price_per_mtok": 0.16,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "kimi-k3",
+     "family": "moonshot",
+     "size_tier": 3,
+     "context_window": 1048576,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "coding",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 3.0,
+     "output_price_per_mtok": 15.0,
+     "cache_read_price_per_mtok": 0.3,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-4.6",
+     "family": "zhipuai",
+     "size_tier": 2,
+     "context_window": 200000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "function_calling",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.6,
+     "output_price_per_mtok": 2.2,
+     "cache_read_price_per_mtok": 0.11,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-4.5",
+     "family": "zhipuai",
+     "size_tier": 1,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "code_generation",
+      "function_calling",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.6,
+     "output_price_per_mtok": 2.2,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-4.5-air",
+     "family": "zhipuai",
+     "size_tier": 1,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "chat",
+      "function_calling",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.2,
+     "output_price_per_mtok": 1.1,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-4.7",
+     "family": "zhipuai",
+     "size_tier": 2,
+     "context_window": 200000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "function_calling",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.6,
+     "output_price_per_mtok": 2.2,
+     "cache_read_price_per_mtok": 0.11,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-5",
+     "family": "zhipuai",
+     "size_tier": 2,
+     "context_window": 200000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "function_calling",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.0,
+     "output_price_per_mtok": 3.2,
+     "cache_read_price_per_mtok": 0.2,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-5.1",
+     "family": "zhipuai",
+     "size_tier": 2,
+     "context_window": 200000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "function_calling",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.4,
+     "output_price_per_mtok": 4.4,
+     "cache_read_price_per_mtok": 0.26,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-5.2",
+     "family": "zhipuai",
+     "size_tier": 2,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "function_calling",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.4,
+     "output_price_per_mtok": 4.4,
+     "cache_read_price_per_mtok": 0.26,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "glm-5.3",
+     "family": "zhipuai",
+     "size_tier": 2,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "function_calling",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.4,
+     "output_price_per_mtok": 4.4,
+     "cache_read_price_per_mtok": 0.26,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "minimax-m2.1",
+     "family": "minimax",
+     "size_tier": 1,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "coding",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.3,
+     "output_price_per_mtok": 1.2,
+     "cache_read_price_per_mtok": 0.03,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "minimax-m2",
+     "family": "minimax",
+     "size_tier": 1,
+     "context_window": 200000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "coding",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.3,
+     "output_price_per_mtok": 1.2,
+     "cache_read_price_per_mtok": 0.03,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "MiniMax-M2.5",
+     "family": "minimax",
+     "size_tier": 1,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "agentic",
+      "coding",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.3,
+     "output_price_per_mtok": 1.2,
+     "cache_read_price_per_mtok": 0.03,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "MiniMax-M3",
+     "family": "minimax",
+     "size_tier": 1,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "coding",
+      "long_context",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 0.3,
+     "output_price_per_mtok": 1.2,
+     "cache_read_price_per_mtok": 0.06,
+     "context_tiers": [
+      {
+       "above_tokens": 512000,
+       "input_price_per_mtok": 0.6,
+       "output_price_per_mtok": 2.4,
+       "cache_read_price_per_mtok": 0.12
+      }
+     ],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "meta/llama-3.3-70b-instruct",
+     "family": "nvidia_nim",
+     "size_tier": 2,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "chat",
+      "coding",
+      "long_context",
+      "qa",
+      "reasoning",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.71,
+     "output_price_per_mtok": 0.71,
+     "cache_read_price_per_mtok": null,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "deepseek-ai/deepseek-v4-flash",
+     "family": "nvidia_nim",
+     "size_tier": 2,
+     "context_window": 131072,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "chat",
+      "coding",
+      "instruction_following",
+      "qa",
+      "summarization"
+     ],
+     "input_price_per_mtok": 0.3,
+     "output_price_per_mtok": 1.2,
+     "cache_read_price_per_mtok": 0.006,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "deepseek-ai/deepseek-v4-pro",
+     "family": "nvidia_nim",
+     "size_tier": 3,
+     "context_window": 128000,
+     "supports_tools": true,
+     "supports_vision": false,
+     "strengths": [
+      "chat",
+      "coding",
+      "instruction_following",
+      "qa",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.32,
+     "output_price_per_mtok": 3.96,
+     "cache_read_price_per_mtok": 0.044,
+     "context_tiers": [],
+     "threshold_inclusive": false
+    },
+    {
+     "id": "grok-4.20",
+     "family": "xai",
+     "size_tier": 2,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.25,
+     "output_price_per_mtok": 2.5,
+     "cache_read_price_per_mtok": 0.2,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 2.5,
+       "output_price_per_mtok": 5.0,
+       "cache_read_price_per_mtok": 0.4
+      }
+     ],
+     "threshold_inclusive": true
+    },
+    {
+     "id": "grok-4.3",
+     "family": "xai",
+     "size_tier": 2,
+     "context_window": 1000000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 1.25,
+     "output_price_per_mtok": 2.5,
+     "cache_read_price_per_mtok": 0.2,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 2.5,
+       "output_price_per_mtok": 5.0,
+       "cache_read_price_per_mtok": 0.4
+      }
+     ],
+     "threshold_inclusive": true
+    },
+    {
+     "id": "grok-4.5",
+     "family": "xai",
+     "size_tier": 3,
+     "context_window": 500000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.0,
+     "output_price_per_mtok": 6.0,
+     "cache_read_price_per_mtok": 0.3,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 4.0,
+       "output_price_per_mtok": 12.0,
+       "cache_read_price_per_mtok": 0.6
+      }
+     ],
+     "threshold_inclusive": true
+    },
+    {
+     "id": "grok-4.6",
+     "family": "xai",
+     "size_tier": 3,
+     "context_window": 500000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.0,
+     "output_price_per_mtok": 6.0,
+     "cache_read_price_per_mtok": 0.5,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 4.0,
+       "output_price_per_mtok": 12.0,
+       "cache_read_price_per_mtok": 1.0
+      }
+     ],
+     "threshold_inclusive": true
+    },
+    {
+     "id": "grok-4.7",
+     "family": "xai",
+     "size_tier": 3,
+     "context_window": 500000,
+     "supports_tools": true,
+     "supports_vision": true,
+     "strengths": [
+      "agentic",
+      "code_generation",
+      "math",
+      "reasoning"
+     ],
+     "input_price_per_mtok": 2.0,
+     "output_price_per_mtok": 6.0,
+     "cache_read_price_per_mtok": 0.5,
+     "context_tiers": [
+      {
+       "above_tokens": 200000,
+       "input_price_per_mtok": 4.0,
+       "output_price_per_mtok": 12.0,
+       "cache_read_price_per_mtok": 1.0
+      }
+     ],
+     "threshold_inclusive": true
+    }
+   ]
+  }
+ },
+ "GET /v1/task-types null": {
+  "status": 200,
+  "body": {
+   "version": 5,
+   "families": {
+    "code": "Writing, reviewing or transforming source code.",
+    "text": "Transforming or condensing natural-language text.",
+    "structured": "Producing structured output: labels, fields, records.",
+    "reasoning": "Multi-step reasoning, math, planning and agent steps.",
+    "dialogue": "Open-ended conversation or question answering."
+   },
+   "data": [
+    {
+     "id": "code_generation",
+     "family": "code",
+     "description": "Write new source code, queries or scripts from a specification.",
+     "aliases": [
+      "codegen",
+      "code_synthesis",
+      "code_completion",
+      "sql_generation"
+     ],
+     "tier": 3,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "code_review",
+     "family": "code",
+     "description": "Review, critique, lint or refactor existing source code.",
+     "aliases": [
+      "review",
+      "refactor",
+      "lint",
+      "code_audit"
+     ],
+     "tier": 3,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "summarization",
+     "family": "text",
+     "description": "Condense a longer text into a shorter one, preserving key points.",
+     "aliases": [
+      "summary",
+      "summarize",
+      "tldr",
+      "digest",
+      "abstract"
+     ],
+     "tier": 1,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "translation",
+     "family": "text",
+     "description": "Translate text from one natural language into another.",
+     "aliases": [
+      "translate",
+      "localization",
+      "localize"
+     ],
+     "tier": 2,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "classification",
+     "family": "structured",
+     "description": "Assign one label from a fixed set of labels.",
+     "aliases": [
+      "classify",
+      "categorize",
+      "categorise",
+      "labeling",
+      "triage"
+     ],
+     "tier": 1,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "extraction",
+     "family": "structured",
+     "description": "Pull structured fields or records out of unstructured input.",
+     "aliases": [
+      "extract",
+      "parse",
+      "scrape",
+      "ner"
+     ],
+     "tier": 1,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "qa",
+     "family": "dialogue",
+     "description": "Answer a question, optionally grounded in supplied context.",
+     "aliases": [
+      "question_answering",
+      "answer",
+      "rag"
+     ],
+     "tier": 2,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "chat",
+     "family": "dialogue",
+     "description": "Hold an open-ended, multi-turn conversation.",
+     "aliases": [
+      "conversation",
+      "assistant",
+      "reply"
+     ],
+     "tier": 1,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "reasoning",
+     "family": "reasoning",
+     "description": "Multi-step logical reasoning or analysis without a specific domain.",
+     "aliases": [
+      "analysis",
+      "analyze",
+      "think"
+     ],
+     "tier": 3,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "math",
+     "family": "reasoning",
+     "description": "Solve or prove mathematical problems.",
+     "aliases": [
+      "mathematics",
+      "proof"
+     ],
+     "tier": 3,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "planning",
+     "family": "reasoning",
+     "description": "Break a goal into an ordered plan of steps.",
+     "aliases": [
+      "plan",
+      "task_decomposition"
+     ],
+     "tier": 3,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "tool_use",
+     "family": "reasoning",
+     "description": "An agent step that selects and calls tools or functions.",
+     "aliases": [
+      "function_calling",
+      "agent",
+      "agentic",
+      "tool_call"
+     ],
+     "tier": 2,
+     "needs": [
+      "supports_tools"
+     ],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "code_search",
+     "family": "code",
+     "description": "Find, locate or survey existing code: search a codebase, trace usages, map its structure.",
+     "aliases": [
+      "search",
+      "explore",
+      "codebase_search",
+      "locate"
+     ],
+     "tier": 1,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "debugging",
+     "family": "code",
+     "description": "Diagnose and fix a defect: failing tests, errors, crashes, flaky behaviour.",
+     "aliases": [
+      "debug",
+      "bugfix",
+      "fix",
+      "troubleshoot"
+     ],
+     "tier": 3,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    },
+    {
+     "id": "documentation",
+     "family": "text",
+     "description": "Write or update documentation: READMEs, docstrings, changelogs, release notes.",
+     "aliases": [
+      "docs",
+      "docstring",
+      "readme",
+      "changelog"
+     ],
+     "tier": 2,
+     "needs": [],
+     "deprecated": false,
+     "replaced_by": null
+    }
+   ]
+  }
+ },
+ "POST /v1/route {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"function\":{\"docstring\":\"Classify a support ticket.\",\"module\":\"pipeline\",\"name\":\"classify\",\"parameter_types\":[\"str\"],\"qualname\":\"Triage.classify\",\"return_type\":\"\\\"Literal['bug', 'feature']\\\"\",\"signature\":\"(self, ticket: str) -> \\\"Literal['bug', 'feature']\\\"\"},\"router\":\"heuristic\",\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.8112,
+     "reasons": [
+      "task=classification",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.69",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.6986,
+     "reasons": [
+      "task=classification",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.69",
+      "tier_fit=0.76",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=classification",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 6e-05,
+   "estimated_latency_ms": 22,
+   "request_id": "3b21a678c2b245dbae066f16ef1e1129",
+   "classification": {
+    "task_type": "classification",
+    "family": "structured",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "classification": 28.0
+    },
+    "evidence": [
+     "name:classify x1",
+     "docstring(title):classify x1",
+     "returns:Literal[ x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": null
+  }
+ },
+ "POST /v1/route {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"function\":{\"docstring\":\"Classify a support ticket.\",\"module\":\"triage\",\"name\":\"classify_ticket\",\"parameter_types\":[\"str\"],\"qualname\":\"classify_ticket\",\"return_type\":\"\\\"Literal['bug', 'feature']\\\"\",\"signature\":\"(ticket: str) -> \\\"Literal['bug', 'feature']\\\"\"},\"router\":\"heuristic\",\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.8112,
+     "reasons": [
+      "task=classification",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.69",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.6986,
+     "reasons": [
+      "task=classification",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.69",
+      "tier_fit=0.76",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=classification",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 6e-05,
+   "estimated_latency_ms": 22,
+   "request_id": "e8ab492c5a5c453d88d7d1bca9423f04",
+   "classification": {
+    "task_type": "classification",
+    "family": "structured",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "classification": 28.0
+    },
+    "evidence": [
+     "name:classify x1",
+     "docstring(title):classify x1",
+     "returns:Literal[ x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": null
+  }
+ },
+ "POST /v1/route {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"function\":{\"name\":\"translateLabels\",\"signature\":\"(labels: string[], locale: string): string[]\"},\"router\":\"heuristic\",\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=translation",
+      "task_conf=0.95",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.5438,
+     "reasons": [
+      "task=translation",
+      "task_conf=0.95",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.75",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.5438,
+     "reasons": [
+      "task=translation",
+      "task_conf=0.95",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.75",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.0006000000000000001,
+   "estimated_latency_ms": 22,
+   "request_id": "b6637dbcc2584311b750a2c2c135b5c8",
+   "classification": {
+    "task_type": "translation",
+    "family": "text",
+    "confidence": 0.9498,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.9498,
+    "scores": {
+     "translation": 13.0,
+     "classification": 6.0
+    },
+    "evidence": [
+     "name:translate x1",
+     "params:locale x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": null
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-haiku-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"where is the retry policy configured?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.556,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.93",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "e8c47f9b83064b919a95d7a200649f4c",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "code_search": 6.0
+    },
+    "evidence": [
+     "name:where x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-haiku-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.004,
+    "estimated_latency_ms": 3520
+   },
+   "estimated_savings_usd": 0.0,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"<ide_selection>http/client.py</ide_selection> where is the retry policy configured?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.556,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.93",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "6ca8d7fec43c45589596d9d9739e3d65",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "code_search": 6.0
+    },
+    "evidence": [
+     "name:where x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.16,
+    "estimated_latency_ms": 10240
+   },
+   "estimated_savings_usd": 0.156,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Fix the failing test in the auth module\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.6077,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.6077,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-4-6",
+     "score": 0.5987,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.13",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "19163648576f463381a9c5eebfb5fad2",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "debugging": 32.0
+    },
+    "evidence": [
+     "name:fix x1",
+     "name:failing x1",
+     "docstring(title):failing test x1",
+     "docstring(title):fix the x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.48,
+    "estimated_latency_ms": 30720
+   },
+   "estimated_savings_usd": 0.24,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"do you have access to actrouter?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.7735,
+     "reasons": [
+      "task=chat",
+      "task_conf=0.86",
+      "task_source=classifier",
+      "quality_fit=0.64",
+      "tier_fit=0.96",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.0055,
+   "estimated_latency_ms": 4730,
+   "request_id": "6adbff7bf3fb471598ee58fbad8355a2",
+   "classification": {
+    "task_type": "chat",
+    "family": "dialogue",
+    "confidence": 0.8578,
+    "source": "classifier",
+    "accepted": true,
+    "family_confidence": 0.8578,
+    "scores": {
+     "chat": 0.858,
+     "qa": 0.03,
+     "planning": 0.027,
+     "tool_use": 0.013,
+     "math": 0.01
+    },
+    "evidence": [
+     "classifier: chat p=0.86"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.22,
+    "estimated_latency_ms": 13760
+   },
+   "estimated_savings_usd": 0.2145,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"sure It is a model router. Want me to write release notes for the last 10 commits as well? explain what this repo does\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=documentation",
+      "task_conf=0.91",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.065,
+   "estimated_latency_ms": 4950,
+   "request_id": "28cafe3922df4c9abe3efb17a2724c09",
+   "classification": {
+    "task_type": "documentation",
+    "family": "text",
+    "confidence": 0.9083,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.9083,
+    "scores": {
+     "documentation": 10.0
+    },
+    "evidence": [
+     "docstring(title):release notes x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.26,
+    "estimated_latency_ms": 14400
+   },
+   "estimated_savings_usd": 0.195,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 5000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"sure\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "be2380aeeafe412e9f06e2a84f52012a",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.95"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.22,
+    "estimated_latency_ms": 13760
+   },
+   "estimated_savings_usd": 0.165,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"thanks Hello! How can I help? hi\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "66e5fbb4bfcb44f7bfb3dd02391dcd6e",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.98"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.22,
+    "estimated_latency_ms": 13760
+   },
+   "estimated_savings_usd": 0.165,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"thanks\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "32ede56317244b99aef3d206811dfa42",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.98"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.22,
+    "estimated_latency_ms": 13760
+   },
+   "estimated_savings_usd": 0.165,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"where is the retry policy configured?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.556,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.93",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "5d944ab552884afb8cd116a8a9076bc2",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "code_search": 6.0
+    },
+    "evidence": [
+     "name:where x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.16,
+    "estimated_latency_ms": 10240
+   },
+   "estimated_savings_usd": 0.156,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"yes please It is set in `http/client.py`. Do you want me to search the repo for every caller that overrides it? where is the retry policy configured?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "d0a6a8dc2b154096a6d04f8380348cfb",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 12.0
+    },
+    "evidence": [
+     "docstring(title):search the x1",
+     "docstring(title):the repo x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.16,
+    "estimated_latency_ms": 10240
+   },
+   "estimated_savings_usd": 0.156,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"yes please\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "16abd483707747ee9e0968c15950d13b",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.96"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.22,
+    "estimated_latency_ms": 13760
+   },
+   "estimated_savings_usd": 0.165,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"yes, go ahead\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "e366a323cfe9494aa971726f68c00342",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.98"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.22,
+    "estimated_latency_ms": 13760
+   },
+   "estimated_savings_usd": 0.165,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-sonnet-4-6\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find config loader\",\"task_kind\":\"code_search\",\"title\":\"Find config loader\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5707,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.95",
+      "task_source=declared",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "e888c243a25d4d009885ff227da1dc27",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.95,
+    "source": "declared",
+    "accepted": true,
+    "family_confidence": 0.95,
+    "scores": {
+     "code_search": 0.95
+    },
+    "evidence": [
+     "declared: task_kind=code_search"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-sonnet-4-6",
+    "known": true,
+    "estimated_cost_usd": 0.12,
+    "estimated_latency_ms": 5760
+   },
+   "estimated_savings_usd": 0.116,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-sonnet-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"The auth integration test fails 1 in 5 runs, figure out why and fix it\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.5911,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.93",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "2ad3a700faeb402cbee1840106b95b90",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "debugging": 6.0
+    },
+    "evidence": [
+     "name:failing x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-sonnet-5",
+    "known": true,
+    "estimated_cost_usd": 0.24,
+    "estimated_latency_ms": 17280
+   },
+   "estimated_savings_usd": 0.0,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-sonnet-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"where is the retry policy configured?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.556,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.93",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "40e6e6c4cbaa428d95d016cb99d1b70c",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "code_search": 6.0
+    },
+    "evidence": [
+     "name:where x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-sonnet-5",
+    "known": true,
+    "estimated_cost_usd": 0.08,
+    "estimated_latency_ms": 5760
+   },
+   "estimated_savings_usd": 0.076,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-sonnet-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"yes, go ahead\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "8aa33d24096d458a8e2f7d11447fe186",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.98"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-sonnet-5",
+    "known": true,
+    "estimated_cost_usd": 0.11,
+    "estimated_latency_ms": 7740
+   },
+   "estimated_savings_usd": 0.055,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-sonnet-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find where config is loaded\",\"title\":\"Find where config is loaded\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "3a4d0db3deb7478b99dc80ddd5e85c3d",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 24.0
+    },
+    "evidence": [
+     "name:find x1",
+     "name:where x1",
+     "docstring(title):find where x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-sonnet-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.08,
+    "estimated_latency_ms": 5760
+   },
+   "estimated_savings_usd": 0.076,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-sonnet-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Search the repo for usages of parse_args\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5197,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=0.76",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "70591e2263874b88ac49c395e15e3dca",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 36.0,
+     "extraction": 8.0
+    },
+    "evidence": [
+     "name:search x1",
+     "name:usages x1",
+     "docstring(title):search the x1",
+     "docstring(title):usages of x1",
+     "docstring(title):the repo x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-sonnet-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.08,
+    "estimated_latency_ms": 5760
+   },
+   "estimated_savings_usd": 0.076,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Debug flaky test\",\"title\":\"Debug flaky test\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.6077,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "b6f1d96341874ca9b4d2c4797cd51214",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "debugging": 36.0
+    },
+    "evidence": [
+     "name:debug x1",
+     "name:flaky x1",
+     "docstring(title):debug x1",
+     "docstring(title):flaky x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Debug the flaky integration test\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.6077,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.6077,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-4-6",
+     "score": 0.5987,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.13",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "c2c0de2d0fce451f8e3da4ecfab8efd9",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "debugging": 36.0
+    },
+    "evidence": [
+     "name:debug x1",
+     "name:flaky x1",
+     "docstring(title):debug x1",
+     "docstring(title):flaky x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find config loader\",\"task_kind\":\"code_search\",\"title\":\"Find config loader\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5707,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.95",
+      "task_source=declared",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "4d834127ec884b93836dac7b7b1f3172",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.95,
+    "source": "declared",
+    "accepted": true,
+    "family_confidence": 0.95,
+    "scores": {
+     "code_search": 0.95
+    },
+    "evidence": [
+     "declared: task_kind=code_search"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find x\",\"title\":\"Find x\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.562,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.82",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.95",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "97019afe322e492288a8547853796399",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.8167,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.8167,
+    "scores": {
+     "code_search": 8.0
+    },
+    "evidence": [
+     "name:find x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Search the repo for usages of foo\",\"title\":\"Search the repo for usages of foo\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "8cc05be21db0411a905f6b986c0ecaa4",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 36.0
+    },
+    "evidence": [
+     "name:search x1",
+     "name:usages x1",
+     "docstring(title):search the x1",
+     "docstring(title):usages of x1",
+     "docstring(title):the repo x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Search the repo for usages of parse_args\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5197,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=0.76",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "6c971ecf34314238bfe5f6ddbd1372b6",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 36.0,
+     "extraction": 8.0
+    },
+    "evidence": [
+     "name:search x1",
+     "name:usages x1",
+     "docstring(title):search the x1",
+     "docstring(title):usages of x1",
+     "docstring(title):the repo x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"The auth integration test fails 1 in 5 runs, figure out why and fix it\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.5911,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.93",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "d46f1f9cf846401e9f1b61a841b609bf",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "debugging": 6.0
+    },
+    "evidence": [
+     "name:failing x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"where is the retry policy configured?\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.556,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.72",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.93",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "e9b7dbc018dc414ba67e37167fbb1f32",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.725,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.725,
+    "scores": {
+     "code_search": 6.0
+    },
+    "evidence": [
+     "name:where x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"quality\",\"router\":\"heuristic\",\"task\":{\"description\":\"Fix the failing auth test\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.6394,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.6394,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-4-6",
+     "score": 0.6374,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.13",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "96fc6a2a9f4146e1b00e01d65cefc377",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "debugging": 22.0
+    },
+    "evidence": [
+     "name:fix x1",
+     "name:failing x1",
+     "docstring(title):fix the x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"gpt-5-mini\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Summarize the thread\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "gpt-5-mini",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "gpt-5-mini",
+     "score": 0.8112,
+     "reasons": [
+      "task=summarization",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.69",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.009000000000000001,
+   "estimated_latency_ms": 1980,
+   "request_id": "710bdebb629c4e18b640fc166b8da780",
+   "classification": {
+    "task_type": "summarization",
+    "family": "text",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "summarization": 18.0
+    },
+    "evidence": [
+     "name:summarize x1",
+     "docstring(title):summarize x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 20000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"gpt-5.5\",\"gpt-5.4-mini\",\"gpt-5-mini\",\"gpt-5.6\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Implement a new REST endpoint\"},\"top_k\":5}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "gpt-5.4-mini",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "gpt-5.4-mini",
+     "score": 0.6958,
+     "reasons": [
+      "task=code_generation",
+      "task_conf=0.90",
+      "task_source=classifier",
+      "quality_fit=0.67",
+      "tier_fit=0.77",
+      "cost_fit=0.69",
+      "latency_fit=0.58"
+     ]
+    },
+    {
+     "model_id": "gpt-5.6",
+     "score": 0.6807,
+     "reasons": [
+      "task=code_generation",
+      "task_conf=0.90",
+      "task_source=classifier",
+      "quality_fit=0.68",
+      "tier_fit=0.98",
+      "cost_fit=0.14",
+      "latency_fit=0.00"
+     ]
+    },
+    {
+     "model_id": "gpt-5.5",
+     "score": 0.6687,
+     "reasons": [
+      "task=code_generation",
+      "task_conf=0.90",
+      "task_source=classifier",
+      "quality_fit=0.68",
+      "tier_fit=0.98",
+      "cost_fit=0.00",
+      "latency_fit=0.00"
+     ]
+    },
+    {
+     "model_id": "gpt-5-mini",
+     "score": 0.4498,
+     "reasons": [
+      "task=code_generation",
+      "task_conf=0.90",
+      "task_source=classifier",
+      "quality_fit=0.30",
+      "tier_fit=0.52",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.096,
+   "estimated_latency_ms": 12320,
+   "request_id": "8689126b159d44ab9fcb3b12ccb197ea",
+   "classification": {
+    "task_type": "code_generation",
+    "family": "code",
+    "confidence": 0.9025,
+    "source": "classifier",
+    "accepted": true,
+    "family_confidence": 0.9025,
+    "scores": {
+     "code_generation": 0.752,
+     "documentation": 0.045,
+     "code_search": 0.033,
+     "classification": 0.027,
+     "chat": 0.019
+    },
+    "evidence": [
+     "classifier: code_generation p=0.75",
+     "name:implement x1"
+    ],
+    "inventory_version": 5,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 80000,
+    "completion_tokens": 8000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"x\",\"input\":\"code\"},\"top_k\":3}": {
+  "status": 422,
+  "body": {
+   "detail": [
+    {
+     "type": "value_error",
+     "loc": [
+      "body",
+      "task"
+     ],
+     "msg": "Value error, task payload contains forbidden data fields: ['input']. Describe the task; do not send the material it works on.",
+     "input": {
+      "description": "x",
+      "input": "code"
+     },
+     "ctx": {
+      "error": {}
+     }
+    }
+   ]
+  }
+ }
+}

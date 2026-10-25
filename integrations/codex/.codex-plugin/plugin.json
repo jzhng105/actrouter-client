@@ -1,0 +1,18 @@
+{
+  "name": "actrouter",
+  "version": "0.2.0",
+  "description": "Routes work to the right model: recommends a model for subagents and sizeable tasks, and for LLM-calling code you write.",
+  "author": {
+    "name": "ActRouter contributors"
+  },
+  "homepage": "https://github.com/jzhng105/actrouter-client",
+  "repository": "https://github.com/jzhng105/actrouter-client",
+  "license": "MIT",
+  "keywords": [
+    "model-routing",
+    "llm-router",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

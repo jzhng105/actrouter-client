@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "actrouter": {
+      "command": "uvx",
+      "args": [
+        "--quiet",
+        "--from",
+        "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main",
+        "python",
+        "-m",
+        "actrouter_client.mcp_server"
+      ],
+      "env": {
+        "ACTROUTER_HOST": "claude-code",
+        "ACTROUTER_API_KEY": "${user_config.api_key}",
+        "ACTROUTER_URL": "${user_config.router_url}",
+        "ACTROUTER_PROJECT_DIR": "${CLAUDE_PROJECT_DIR}"
+      }
+    }
+  }
+}

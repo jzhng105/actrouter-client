@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "actrouter-client"
+version = "0.2.0"
+description = "ActRouter for agents: API client, MCP server, Claude Code hook and launcher."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+urls = { Homepage = "https://github.com/jzhng105/actrouter-client" }
+authors = [{ name = "ActRouter contributors" }]
+# The client itself is standard library only, so actdecor can depend on it.
+dependencies = []
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.10"]
+dev = ["mcp>=1.10", "pytest>=8"]
+
+[project.scripts]
+actrouter-mcp = "actrouter_client.mcp_server:main"
+actrouter-route = "actrouter_client.cli:main"
+actrouter-claude-hook = "actrouter_client.claude_hook:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]

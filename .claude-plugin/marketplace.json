@@ -1,0 +1,12 @@
+{
+  "name": "actrouter",
+  "description": "ActRouter model routing for Claude Code.",
+  "owner": { "name": "ActRouter" },
+  "plugins": [
+    {
+      "name": "actrouter",
+      "source": "./integrations/claude-code",
+      "description": "Picks a model for each prompt and subagent automatically, and recommends models for LLM-calling code. Needs an ActRouter API key."
+    }
+  ]
+}
