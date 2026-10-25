@@ -7,6 +7,8 @@
     actrouter-route launch codex -- "add retries to the http client"
     actrouter-route launch claude --describe "write release notes" -- -p "..."
     actrouter-route report --days 30 --html savings.html
+    actrouter-route upgrade              # free -> Pro, in Stripe Checkout
+    actrouter-route billing              # card, invoices, cancelling
 
 ``launch`` routes on the agent's prompt (or ``--describe``), then replaces
 itself with the agent CLI, passing the model (``codex -m``, ``claude
@@ -149,6 +151,18 @@ def _cmd_launch(args: argparse.Namespace) -> int:
     return 0  # pragma: no cover - execv does not return
 
 
+def _cmd_billing_link(args: argparse.Namespace) -> int:
+    from actrouter_client.client import connect
+
+    url = connect().billing_link(args.link)  # type: ignore[attr-defined]
+    print(url)
+    if not args.no_browser:
+        import webbrowser
+
+        webbrowser.open(url)
+    return 0
+
+
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(prog="actrouter-route", description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -196,6 +210,14 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--html", help="Also write a self-contained HTML dashboard here")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_report)
+
+    p = sub.add_parser("upgrade", help="Move your API key to the Pro plan (opens Stripe Checkout)")
+    p.add_argument("--no-browser", action="store_true", help="Only print the link")
+    p.set_defaults(func=_cmd_billing_link, link="upgrade")
+
+    p = sub.add_parser("billing", help="Manage your plan: card, invoices, cancelling (Stripe portal)")
+    p.add_argument("--no-browser", action="store_true", help="Only print the link")
+    p.set_defaults(func=_cmd_billing_link, link="portal")
 
     args = parser.parse_args(argv)
     try:

@@ -205,3 +205,28 @@ def test_missing_api_key_says_how_to_set_one(http_stub) -> None:
     assert e.value.status == 401
     with pytest.raises(ActRouterError, match="ACTROUTER_API_KEY was rejected"):
         HttpRouter(url, headers={"x-api-key": "wrong"}).list_models()
+
+
+def test_plan_limit_carries_the_server_message(http_stub) -> None:
+    url = http_stub(lambda m, p, b: (402, {"detail": "free tier used up: run `actrouter-route upgrade`"}))
+    with pytest.raises(ActRouterError) as e:
+        HttpRouter(url).route_task({"description": "x"})
+    assert e.value.status == 402
+    assert str(e.value) == "free tier used up: run `actrouter-route upgrade`"
+
+
+def test_upgrade_and_billing_print_stripe_links(http_stub, monkeypatch, capsys) -> None:
+    from actrouter_client.cli import main
+
+    seen = []
+
+    def handler(method, path, body):
+        seen.append((method, path))
+        return 200, {"url": f"https://stripe.test{path}"}
+
+    monkeypatch.setenv("ACTROUTER_URL", http_stub(handler))
+    monkeypatch.setenv("ACTROUTER_API_KEY", "ar_live_x")
+    assert main(["upgrade", "--no-browser"]) == 0
+    assert main(["billing", "--no-browser"]) == 0
+    assert capsys.readouterr().out.split() == ["https://stripe.test/billing/upgrade", "https://stripe.test/billing/portal"]
+    assert seen == [("POST", "/billing/upgrade"), ("POST", "/billing/portal")]

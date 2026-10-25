@@ -182,6 +182,16 @@ class HttpRouter:
     def health(self) -> dict[str, Any]:
         return self._request("GET", "/health")
 
+    def billing_link(self, kind: str) -> str:
+        """A Stripe link for this key's customer: ``upgrade`` (Checkout for
+        Pro) or ``portal`` (card, invoices, cancelling)."""
+        if kind not in ("upgrade", "portal"):
+            raise ValueError(f"unknown billing link {kind!r}")
+        url = self._request("POST", f"/billing/{kind}", {}).get("url")
+        if not isinstance(url, str):
+            raise ActRouterError(f"ActRouter returned no {kind} link")
+        return url
+
     def _request(
         self, method: str, path: str, payload: Optional[dict[str, Any]] = None
     ) -> dict[str, Any]:
@@ -197,6 +207,12 @@ class HttpRouter:
                 detail = exc.read().decode("utf-8", errors="replace")
             except Exception:  # pragma: no cover - defensive
                 pass
+            if exc.code == 402:  # the plan's limit; the server says what to do
+                try:
+                    message = json.loads(detail)["detail"]
+                except (ValueError, KeyError, TypeError):
+                    message = detail or "ActRouter plan limit reached: run `actrouter-route upgrade`"
+                raise ActRouterError(str(message), 402) from exc
             if exc.code == 401:
                 hint = (
                     "ACTROUTER_API_KEY was rejected" if "x-api-key" in self.headers

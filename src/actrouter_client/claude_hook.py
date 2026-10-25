@@ -78,7 +78,7 @@ from actrouter_client import baseline as baselines
 from actrouter_client import ledger
 from actrouter_client import transcript
 from actrouter_client.advisor import Advisor
-from actrouter_client.client import connect
+from actrouter_client.client import ActRouterError, connect
 
 #: the tool Claude Code spawns subagents with ("Task" in older releases)
 AGENT_TOOLS = frozenset({"Agent", "Task"})
@@ -482,6 +482,21 @@ def record_subagent_stop(event: dict[str, Any]) -> None:
     )
 
 
+def _account_notice(event: Any, exc: Exception) -> Optional[dict[str, Any]]:
+    """A missing key or a used-up plan stops routing; say so to the user,
+    once a session per cause, instead of failing open in silence. Nothing
+    else about the prompt or subagent changes."""
+    status = getattr(exc, "status", None)
+    if not isinstance(exc, ActRouterError) or status not in (401, 402) or not isinstance(event, dict):
+        return None
+    session = event.get("session_id")
+    seen = _load_state(session, "notice") or {}
+    if seen.get(str(status)):
+        return None
+    _save_state(session, "notice", {**seen, str(status): True})
+    return {"systemMessage": f"ActRouter: {exc} Routing is paused until then; Claude carries on as usual."}
+
+
 def main(stdin: TextIO = sys.stdin, stdout: TextIO = sys.stdout) -> int:
     try:
         _apply_plugin_options()
@@ -501,6 +516,10 @@ def main(stdin: TextIO = sys.stdin, stdout: TextIO = sys.stdout) -> int:
             answer = decide(event) if isinstance(event, dict) else None
     except Exception as exc:  # fail open: never block or alter a prompt or subagent on error
         print(f"actrouter hook: {exc}", file=sys.stderr)
+        answer = _account_notice(event, exc) if "event" in locals() else None
+        if answer is not None:
+            json.dump(answer, stdout)
+            stdout.write("\n")
         return 0
     if answer is not None:
         json.dump(answer, stdout)

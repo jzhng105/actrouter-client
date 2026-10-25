@@ -390,3 +390,27 @@ def test_plugin_api_key_reaches_the_client(monkeypatch: pytest.MonkeyPatch) -> N
     monkeypatch.setenv("CLAUDE_PLUGIN_OPTION_API_KEY", "ar_live_test")
     _apply_plugin_options()
     assert connect().headers["x-api-key"] == "ar_live_test"
+
+
+def test_used_up_plan_is_told_to_the_user_once(
+    on_opus: str, http_stub, tmp_path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    detail = "ActRouter free tier used up: 30 of 30 routing calls this month. Upgrade: run `actrouter-route upgrade`."
+    monkeypatch.setenv("ACTROUTER_URL", http_stub(lambda m, p, b: (402, {"detail": detail})))
+    monkeypatch.setenv("ACTROUTER_STATE_DIR", str(tmp_path / "state"))
+    ev = prompt_event("where is the retry policy configured?", on_opus)
+    out = io.StringIO()
+    assert main(io.StringIO(json.dumps(ev)), out) == 0
+    message = json.loads(out.getvalue())["systemMessage"]
+    assert "30 of 30" in message and "actrouter-route upgrade" in message
+    assert set(json.loads(out.getvalue())) == {"systemMessage"}  # the prompt is not touched
+    again = io.StringIO()
+    main(io.StringIO(json.dumps(ev)), again)
+    assert again.getvalue() == ""
+
+
+def test_other_errors_still_fail_open_silently(on_opus: str, http_stub, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ACTROUTER_URL", http_stub(lambda m, p, b: (500, {"detail": "boom"})))
+    out = io.StringIO()
+    main(io.StringIO(json.dumps(prompt_event("where is the retry policy configured?", on_opus))), out)
+    assert out.getvalue() == ""

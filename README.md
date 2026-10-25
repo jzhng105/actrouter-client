@@ -15,6 +15,16 @@ the hosted ActRouter API; this repository is the open client side:
 
 You need an ActRouter API key (starts with `ar_live_`).
 
+| Plan | Price | Routing calls |
+|---|---|---|
+| Free | $0 | 30 a month |
+| Pro | $10 a month | 1,500 included, then $10 per 1,000 |
+
+Only routing calls count; listing models is free. `actrouter-route upgrade`
+moves your key to Pro, and `actrouter-route billing` manages your card,
+invoices and plan. When the free calls run out, the plugin tells you once
+per session and Claude carries on unrouted.
+
 ## Claude Code
 
 ```
