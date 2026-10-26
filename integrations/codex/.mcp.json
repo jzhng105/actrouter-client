@@ -3,6 +3,8 @@
     "actrouter": {
       "command": "uvx",
       "args": [
+        "--python",
+        "3.12",
         "--quiet",
         "--from",
         "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main",

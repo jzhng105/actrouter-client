@@ -21,6 +21,14 @@ Everything below needs:
   minute or two while uv builds the environment; after that a start takes
   about a second.
 
+  Every `uvx` invocation below passes `--python 3.12`. The client needs
+  Python >= 3.10, and without the flag `uvx` uses whichever `python3` comes
+  first on `PATH` - which, in the environment an agent launches MCP servers
+  from, is often the system Python 3.9 even when newer ones are installed.
+  The resolve then fails with `No solution found when resolving tool
+  dependencies` and the agent reports only a closed connection. uv downloads
+  a 3.12 if the machine has none.
+
 What is sent to the API, and what never is: [privacy](../docs/agent_integration.md#5-client-hosts-backends-privacy).
 
 The very first start can exceed an agent's MCP startup timeout. If the
@@ -28,7 +36,7 @@ server shows as failed the first time, run this once to warm uv's cache,
 then restart the agent:
 
 ```bash
-ACTROUTER_API_KEY=ar_live_... uvx --from "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main" \
+ACTROUTER_API_KEY=ar_live_... uvx --python 3.12 --from "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main" \
   python -m actrouter_client.cli models --host claude-code
 ```
 
@@ -93,7 +101,7 @@ Or register only the MCP server:
 
 ```bash
 codex mcp add actrouter --env ACTROUTER_HOST=codex -- \
-  uvx --quiet \
+  uvx --python 3.12 --quiet \
     --from "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main" \
     python -m actrouter_client.mcp_server
 ```
@@ -103,7 +111,7 @@ which writes this to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.actrouter]
 command = "uvx"
-args = ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.mcp_server"]
+args = ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.mcp_server"]
 
 env_vars = ["ACTROUTER_API_KEY"]
 
@@ -126,7 +134,7 @@ To route a whole session, start Codex through the launcher. It picks the
 model from your prompt and runs `codex -m <model> ...`:
 
 ```bash
-uvx --from "actrouter-client @ git+https://github.com/jzhng105/actrouter-client@main" \
+uvx --python 3.12 --from "actrouter-client @ git+https://github.com/jzhng105/actrouter-client@main" \
   python -m actrouter_client.cli launch codex -- "add retries to the http client"
 ```
 
@@ -139,7 +147,7 @@ Most hosts accept the common `mcpServers` JSON:
   "mcpServers": {
     "actrouter": {
       "command": "uvx",
-      "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.mcp_server"],
+      "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.mcp_server"],
       "env": { "ACTROUTER_HOST": "generic", "ACTROUTER_API_KEY": "ar_live_..." }
     }
   }

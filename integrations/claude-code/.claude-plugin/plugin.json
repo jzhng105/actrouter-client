@@ -1,7 +1,7 @@
 {
   "name": "actrouter",
   "displayName": "ActRouter",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Routes work to the right model: routes each of your prompts and every subagent automatically, and recommends models for LLM-calling code you write.",
   "author": {
     "name": "ActRouter contributors"

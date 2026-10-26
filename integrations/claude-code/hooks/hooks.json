@@ -7,7 +7,7 @@
           {
             "type": "command",
             "command": "uvx",
-            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
             "timeout": 30
           }
         ]
@@ -19,7 +19,7 @@
           {
             "type": "command",
             "command": "uvx",
-            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
             "timeout": 30
           }
         ]
@@ -31,7 +31,7 @@
           {
             "type": "command",
             "command": "uvx",
-            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
             "timeout": 30,
             "statusMessage": "ActRouter: routing the request"
           }
@@ -45,7 +45,7 @@
           {
             "type": "command",
             "command": "uvx",
-            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
             "timeout": 30,
             "statusMessage": "ActRouter: choosing a model for the subagent"
           }
@@ -59,7 +59,7 @@
           {
             "type": "command",
             "command": "uvx",
-            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
             "timeout": 30
           }
         ]
@@ -71,7 +71,7 @@
           {
             "type": "command",
             "command": "uvx",
-            "args": ["--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
+            "args": ["--python", "3.12", "--quiet", "--from", "actrouter-client[mcp] @ git+https://github.com/jzhng105/actrouter-client@main", "python", "-m", "actrouter_client.claude_hook"],
             "timeout": 30
           }
         ]
