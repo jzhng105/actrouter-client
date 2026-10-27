@@ -64,7 +64,8 @@ Handler = Callable[[str, str, Any], tuple[int, Any]]
 
 @pytest.fixture()
 def http_stub() -> Iterator[Callable[[Handler], str]]:
-    """Start an HTTP server answering with `handler(method, path, body)`;
+    """Start an HTTP server answering with `handler(method, path, body)`,
+    which returns (status, payload) or (status, payload, headers);
     returns its base URL. Requests are recorded on the handler."""
     servers: list[ThreadingHTTPServer] = []
 
@@ -73,9 +74,11 @@ def http_stub() -> Iterator[Callable[[Handler], str]]:
             def _answer(self) -> None:
                 length = int(self.headers.get("content-length") or 0)
                 body = json.loads(self.rfile.read(length)) if length else None
-                status, payload = handler(self.command, self.path, body)
+                status, payload, *headers = handler(self.command, self.path, body)
                 raw = json.dumps(payload).encode()
                 self.send_response(status)
+                for name, value in (headers[0] if headers else {}).items():
+                    self.send_header(name, value)
                 self.send_header("content-type", "application/json")
                 self.send_header("content-length", str(len(raw)))
                 self.end_headers()

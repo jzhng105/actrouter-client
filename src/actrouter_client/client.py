@@ -25,6 +25,18 @@ DEFAULT_URL = "https://r93hdy7zti.execute-api.us-east-1.amazonaws.com"
 DEFAULT_TIMEOUT = 10.0
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Redirects come back as errors: following one would resend the API
+    key (urllib keeps custom headers) to wherever it points, even over
+    plain HTTP."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # type: ignore[no-untyped-def]
+        return None
+
+
+_opener = urllib.request.build_opener(_NoRedirect)
+
+
 class ActRouterError(RuntimeError):
     """ActRouter is unreachable, rejected the request, or answered nonsense.
     `status` is the HTTP status when there was one."""
@@ -199,7 +211,7 @@ class HttpRouter:
         data = json.dumps(payload).encode() if payload is not None else None
         req = urllib.request.Request(url, data=data, headers=self.headers, method=method)
         try:
-            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+            with _opener.open(req, timeout=self.timeout) as resp:
                 raw = resp.read().decode("utf-8")
         except urllib.error.HTTPError as exc:
             detail = ""
@@ -220,6 +232,12 @@ class HttpRouter:
                 )
                 raise ActRouterError(
                     f"ActRouter needs a valid API key: {hint}. Server said: {detail}", 401
+                ) from exc
+            if 300 <= exc.code < 400:
+                raise ActRouterError(
+                    f"ActRouter at {self.base_url} redirected {path} to {exc.headers.get('location')}; "
+                    "not following it with your API key. Set ACTROUTER_URL to the API's real address.",
+                    exc.code,
                 ) from exc
             raise ActRouterError(
                 f"ActRouter returned HTTP {exc.code} for {path}: {detail}", exc.code

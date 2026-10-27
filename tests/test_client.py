@@ -179,6 +179,21 @@ def test_http_errors(http_stub) -> None:
         HttpRouter("http://127.0.0.1:9", timeout=1).list_models()
 
 
+def test_redirects_never_carry_the_api_key(http_stub) -> None:
+    leaked = []
+
+    def elsewhere(method, path, body):
+        leaked.append(path)
+        return 200, {"data": MODELS}
+
+    other = http_stub(elsewhere)
+    url = http_stub(lambda m, p, b: (302, {}, {"location": f"{other}/v1/models"}))
+    with pytest.raises(ActRouterError, match="not following it with your API key") as e:
+        HttpRouter(url, headers={"x-api-key": "ar_live_secret"}).list_models()
+    assert e.value.status == 302
+    assert leaked == []
+
+
 def test_task_as_function_matches_the_server() -> None:
     # what the server's TaskInfo.to_function_info() gives for this task
     task = {"description": "Fix the failing auth test", "title": "Fix auth test", "cost_budget_usd": 0.1}
