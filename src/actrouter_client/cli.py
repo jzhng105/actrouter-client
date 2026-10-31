@@ -6,6 +6,9 @@
     actrouter-route models --host codex
     actrouter-route launch codex -- "add retries to the http client"
     actrouter-route launch claude --describe "write release notes" -- -p "..."
+    actrouter-route chat codex                    # route every turn (shadow mode first)
+    actrouter-route chat claude --route on "fix the failing auth test"
+    actrouter-route chat codex --test-transitions gpt-5.5,gpt-5.4-mini
     actrouter-route report --days 30 --html savings.html
     actrouter-route upgrade              # free -> Pro, in Stripe Checkout
     actrouter-route billing              # card, invoices, cancelling
@@ -13,7 +16,9 @@
 ``launch`` routes on the agent's prompt (or ``--describe``), then replaces
 itself with the agent CLI, passing the model (``codex -m``, ``claude
 --model``). A model given explicitly is kept, and a routing failure starts
-the agent unchanged.
+the agent unchanged. ``chat`` keeps the session instead and routes every
+prompt, switching the agent's own session model before the turn runs (see
+``docs/chat_routing.md``).
 """
 
 from __future__ import annotations
@@ -151,6 +156,77 @@ def _cmd_launch(args: argparse.Namespace) -> int:
     return 0  # pragma: no cover - execv does not return
 
 
+def _cmd_chat(args: argparse.Namespace) -> int:
+    import asyncio
+
+    from actrouter_client import routing_policy as policy
+    from actrouter_client.chat import repl
+    from actrouter_client.chat.session import ChatConfig, RoutedSession
+    from actrouter_client.chat.ui import TerminalUI
+    from actrouter_client.session_state import Transitions
+
+    def make_agent():  # type: ignore[no-untyped-def]
+        if args.agent == "codex":
+            from actrouter_client.chat.codex import CodexAgent
+
+            return CodexAgent(codex_bin=args.codex_bin, effort=args.effort,
+                              approval_policy=args.approval_policy, sandbox=args.sandbox,
+                              config=args.config)
+        from actrouter_client.chat.claude import ClaudeAgent
+
+        return ClaudeAgent(effort=args.effort, permission_mode=args.permission_mode, cli_path=args.claude_bin)
+
+    host = LAUNCHERS[args.agent][0]
+    advisor = Advisor(host=host)
+    transitions = Transitions(args.agent)
+    ui = TerminalUI()
+
+    if args.test_transitions:
+        from actrouter_client.chat.matrix import check_transitions
+
+        models = [m.strip() for m in args.test_transitions.split(",") if m.strip()]
+        if len(models) < 2:
+            print("actrouter-route: --test-transitions needs two or more models", file=sys.stderr)
+            return 2
+
+        def report(r) -> None:  # type: ignore[no-untyped-def]
+            mark = {True: "ok  ", False: "FAIL", None: "skip"}[r.ok]
+            print(f"{mark} {r.source} -> {r.target}: {r.detail}")
+
+        results = asyncio.run(check_transitions(
+            make_agent, models, transitions,
+            catalog_id=lambda m: advisor.baseline_id(m) or m, report=report,
+        ))
+        print(f"recorded in {transitions.path}")
+        return 0 if all(r.ok is not False for r in results) else 1
+
+    cfg = ChatConfig(
+        mode=args.route,
+        preference=args.preference,
+        prompt_chars=int(os.environ.get("ACTROUTER_CHAT_PROMPT_CHARS", "600") or 600),
+        policy=policy.PolicyConfig(
+            min_savings_usd=args.min_savings,
+            rel_margin=args.margin,
+            cooldown_turns=args.cooldown_turns,
+            cooldown_s=args.cooldown_seconds,
+            upgrades=args.upgrades,
+            allow_untested=args.allow_untested,
+        ),
+        window_cap=args.window_cap,
+    )
+    first = " ".join(args.prompt).strip() or None
+
+    async def main_loop() -> int:
+        session = RoutedSession(make_agent(), advisor, ui, cfg, transitions=transitions)
+        await session.start(model=args.model, resume=args.resume, first_prompt=first)
+        return await repl.run(session, first_prompt=first)
+
+    try:
+        return asyncio.run(main_loop())
+    except KeyboardInterrupt:
+        return 130
+
+
 def _cmd_billing_link(args: argparse.Namespace) -> int:
     from actrouter_client.client import connect
 
@@ -203,6 +279,36 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--preference", choices=["quality", "balanced", "cost"], default="balanced")
     p.add_argument("agent_args", nargs=argparse.REMAINDER)
     p.set_defaults(func=_cmd_launch)
+
+    p = sub.add_parser("chat", help="Run an agent session whose model is routed every turn")
+    p.add_argument("agent", choices=sorted(LAUNCHERS))
+    p.add_argument("prompt", nargs="*", help="A first prompt (optional)")
+    p.add_argument("--route", choices=["shadow", "on", "off"],
+                   default=os.environ.get("ACTROUTER_CHAT_ROUTING", "shadow"),
+                   help="shadow (default): decide and record, never switch; on: switch; off: no routing")
+    p.add_argument("--model", help="Start on this model and keep it (routing leaves it alone)")
+    p.add_argument("--resume", help="Resume this session (Codex thread id / Claude session id)")
+    p.add_argument("--effort", help="Reasoning effort, set once and kept (not routed)")
+    p.add_argument("--preference", choices=["quality", "balanced", "cost"], default="balanced")
+    p.add_argument("--min-savings", type=float, default=0.01, help="$ a switch must save per task (default 0.01)")
+    p.add_argument("--margin", type=float, default=0.2,
+                   help="Share of staying's cost a switch must save (default 0.2; +0.15 on prior workloads)")
+    p.add_argument("--cooldown-turns", type=int, default=2)
+    p.add_argument("--cooldown-seconds", type=float, default=120.0)
+    p.add_argument("--upgrades", choices=["quality", "cost"], default="quality",
+                   help="quality (default): a switch to a larger model needs only the hard gates")
+    p.add_argument("--allow-untested", action="store_true",
+                   help="Switch over model transitions --test-transitions has not checked")
+    p.add_argument("--window-cap", type=int, help="Context window assumed for models the agent has not reported")
+    p.add_argument("--test-transitions", metavar="M1,M2,...",
+                   help="Check which switches between these models work, record them, and exit")
+    p.add_argument("--codex-bin", help="codex executable (default: codex on PATH)")
+    p.add_argument("--approval-policy", help="Codex approval policy (untrusted, on-request, never)")
+    p.add_argument("--sandbox", help="Codex sandbox (read-only, workspace-write, danger-full-access)")
+    p.add_argument("-c", "--config", action="append", default=[], help="Codex -c key=value, repeatable")
+    p.add_argument("--permission-mode", help="Claude permission mode (default, acceptEdits, plan, ...)")
+    p.add_argument("--claude-bin", help="claude executable for the Agent SDK (default: the bundled one)")
+    p.set_defaults(func=_cmd_chat)
 
     p = sub.add_parser("report", help="What routing saved, from the routing ledger")
     p.add_argument("--days", type=int, default=30, help="Look back this many days (0 = all)")

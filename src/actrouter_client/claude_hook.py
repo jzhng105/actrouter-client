@@ -76,6 +76,8 @@ from typing import Any, Optional, TextIO
 
 from actrouter_client import baseline as baselines
 from actrouter_client import ledger
+from actrouter_client import routing_policy as policy
+from actrouter_client import session_state
 from actrouter_client import transcript
 from actrouter_client.advisor import Advisor
 from actrouter_client.client import ActRouterError, connect
@@ -161,36 +163,9 @@ def _advisor(advisor: Optional[Advisor]) -> Advisor:
 # hook can tell a subagent Claude started on the routed model and record it as
 # routed work. Holds models and decisions only, never the prompt.
 
-
-def _state_file(session_id: Any, suffix: str) -> Optional[Path]:
-    name = re.sub(r"[^A-Za-z0-9_.-]", "_", str(session_id or ""))
-    if not name.strip("._"):
-        return None
-    root = os.environ.get("ACTROUTER_STATE_DIR", "").strip()
-    return (Path(root).expanduser() if root else Path.home() / ".actrouter" / "sessions") / f"{name}.{suffix}.json"
-
-
-def _save_state(session_id: Any, suffix: str, value: Optional[dict[str, Any]]) -> None:
-    target = _state_file(session_id, suffix)
-    if target is None:
-        return
-    try:
-        if value is None:
-            target.unlink(missing_ok=True)
-        else:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(json.dumps(value), encoding="utf-8")
-    except OSError as exc:
-        print(f"actrouter hook: could not keep session state: {exc}", file=sys.stderr)
-
-
-def _load_state(session_id: Any, suffix: str) -> Optional[dict[str, Any]]:
-    target = _state_file(session_id, suffix)
-    try:
-        value = json.loads(target.read_text(encoding="utf-8")) if target else None
-    except (OSError, ValueError):
-        return None
-    return value if isinstance(value, dict) else None
+_state_file = session_state.state_file
+_save_state = session_state.save
+_load_state = session_state.load
 
 
 def _save_prompt_route(session_id: Any, route: Optional[dict[str, Any]]) -> None:
@@ -242,48 +217,30 @@ def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Op
             top_k=1,
             baseline=baseline,
         )
-        if (not advice.get("host_model") or advice.get("task_type") in (None, "unknown")
-                or (advice.get("task_confidence") or 0.0) < min_confidence):
-            return None
-        return advice
+        return advice if policy.usable(advice, min_confidence) else None
 
-    routed_on = "prompt"
-    advice = route(prompt[:chars])
-    pinned = _prompt_route(session_id) if advice is None else None
-    if pinned:
-        # A follow-up ("yes, go ahead") stays on the model the conversation
-        # was routed to, as a router pinning the conversation would.
-        advice, routed_on = dict(pinned), "pinned"
-        if pinned.get("baseline") != baseline:  # /model switched since: the estimate is stale
-            for key in ("baseline_estimated_cost_usd", "estimated_savings_usd"):
-                advice.pop(key, None)
-            advice["baseline_model"] = advisor.baseline_id(baseline)
-    elif advice is None:
+    own = route(prompt[:chars])
+    advice, routed_on = policy.choose_route(
+        own, _prompt_route(session_id) if own is None else None,
+        baseline=baseline, baseline_id=advisor.baseline_id(baseline) if own is None else None,
+    )
+    if advice is None:
         # A follow-up with nothing routed before it (a new session, a resumed
         # one): route the work it continues -- what the agent last proposed,
         # and the request that led to it.
         previous, reply = transcript.last_exchange(event.get("transcript_path"), prompt)
-        context = " ".join(p for p in (
-            prompt[: chars // 4],
-            transcript.compress(reply, chars // 2),
-            transcript.compress(previous, chars // 4),
-        ) if p)
-        if not (previous or reply) or not context:
+        context = policy.continuation_text(prompt, previous, reply, chars, transcript.compress)
+        if not context:
             return None
         advice = route(context)
-        routed_on = "previous exchange"
         if advice is None:
             return None
     model = advice["host_model"]
     stays = bool(current) and advisor.baseline_id(current) == advice["model"]
     # Pin the conversation to this routing, also when it keeps the session's
     # model, so follow-ups stay with it until a prompt routes on its own.
-    _save_prompt_route(session_id, {
-        **{k: advice.get(k) for k in ledger.ROUTE_FIELDS},
-        "baseline": baseline,
-        "baseline_source": baseline_source,
-        "stays": stays,
-    })
+    _save_prompt_route(session_id, policy.pin(
+        advice, baseline=baseline, baseline_source=baseline_source, stays=stays))
     if stays:
         return None  # the session already runs on the model that fits
 
