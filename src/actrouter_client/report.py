@@ -142,6 +142,7 @@ def summarize(
     #: SubagentStop usage, by agent: what a background launch's outcome lacks
     finished: dict[tuple[Any, Any], dict[str, Any]] = {}
     skipped = prompts = 0
+    chat_turns: list[dict[str, Any]] = []
     first: Optional[str] = None
     last: Optional[str] = None
     claimed: set[Any] = set()
@@ -156,6 +157,8 @@ def summarize(
             skipped += 1
         elif e["kind"] == "prompt":
             prompts += 1
+        elif e["kind"] == "turn":
+            chat_turns.append(e)
         elif e["kind"] == "outcome" and e.get("tool_use_id"):
             outcomes[(e.get("session_id"), e["tool_use_id"])] = e
         elif e["kind"] == "outcome" and e.get("agent_id"):
@@ -298,8 +301,36 @@ def summarize(
         ),
         "by_surface": dict(sorted(by_surface.items())),
         "baseline_sources": dict(sorted(baseline_sources.items(), key=lambda kv: -kv[1])),
+        "chat": _chat_summary(chat_turns),
         "notes": notes,
     }
+
+
+def _chat_summary(turns: list[dict[str, Any]]) -> dict[str, Any]:
+    """``actrouter-route chat`` turns: what the switch policy decided and what
+    the turns cost. A switch decision's savings are the policy's estimate
+    before the turn, not a measurement: the other model would have used
+    other tokens."""
+    reasons: dict[str, int] = defaultdict(int)
+    out = {"turns": len(turns), "switched": 0, "would_switch_in_shadow": 0,
+           "cost_computed_usd": 0.0, "cost_reported_usd": 0.0, "estimated_savings_of_switches_usd": 0.0}
+    for t in turns:
+        reasons[str(t.get("reason") or "?")] += 1
+        if t.get("switched"):
+            out["switched"] += 1
+        if t.get("reason") == "switch":
+            if t.get("shadow"):
+                out["would_switch_in_shadow"] += 1
+            saving = (t.get("gate") or {}).get("savings_usd")
+            if isinstance(saving, (int, float)):
+                out["estimated_savings_of_switches_usd"] += saving
+        for key in ("cost_computed_usd", "cost_reported_usd"):
+            if isinstance(t.get(key), (int, float)):
+                out[key] += t[key]
+    for key in ("cost_computed_usd", "cost_reported_usd", "estimated_savings_of_switches_usd"):
+        out[key] = round(out[key], 6)
+    out["reasons"] = dict(sorted(reasons.items(), key=lambda kv: -kv[1]))
+    return out
 
 
 def load(days: Optional[int], source: Optional[Path], catalog: list[dict[str, Any]]) -> dict[str, Any]:
@@ -361,6 +392,17 @@ def format_text(s: dict[str, Any]) -> str:
         lines += ["", "most common switches (baseline -> routed):"]
         for row in sorted(s["by_switch"], key=lambda r: -r["calls"])[:6]:
             lines.append(f"  {row['baseline_model']} -> {row['routed_model']}: {row['calls']} calls, saved {_usd(row['saved_usd'])}")
+    chat = s.get("chat") or {}
+    if chat.get("turns"):
+        lines += [
+            "",
+            f"chat turns          {chat['turns']}  (switched {chat['switched']}; "
+            f"would have switched in shadow {chat['would_switch_in_shadow']})",
+            f"  cost from tokens  {_usd(chat['cost_computed_usd'])}  (main session)"
+            + (f"; reported by Claude Code {_usd(chat['cost_reported_usd'])}" if chat["cost_reported_usd"] else ""),
+            f"  switch savings    {_usd(chat['estimated_savings_of_switches_usd'])}  (estimated before each turn)",
+            "  decisions         " + ", ".join(f"{k} {v}" for k, v in chat["reasons"].items()),
+        ]
     if s["notes"]:
         lines += [""] + [f"note: {n}" for n in s["notes"]]
     return "\n".join(lines)

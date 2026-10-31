@@ -10,8 +10,9 @@ the hosted ActRouter API; this repository is the open client side:
 - **An MCP server** for any MCP host (Cursor, Gemini CLI, Windsurf, ...).
 - **`actrouter-client`**, a Python package with no required dependencies:
   the API client, the Claude Code hooks, and the `actrouter-route` CLI,
-  including `launch` (start `codex` or `claude` on a routed model) and
-  `report` (what routing saved, from a ledger kept on your machine).
+  including `launch` (start `codex` or `claude` on a routed model), `chat`
+  (a Codex or Claude Code session whose main model is routed every turn)
+  and `report` (what routing saved, from a ledger kept on your machine).
 
 You need an ActRouter API key (starts with `ar_live_`).
 
@@ -51,8 +52,15 @@ export ACTROUTER_API_KEY=ar_live_...
 actrouter-route task "Fix the failing auth test" --host claude-code
 actrouter-route function src/news.py summarize_article
 actrouter-route launch codex -- "add retries to the http client"
+actrouter-route chat claude --route on "fix the failing auth test"
 actrouter-route report --days 30 --html savings.html
 ```
+
+`chat` runs Codex (through `codex app-server`) or Claude Code (through the
+Claude Agent SDK: `pip install 'actrouter-client[claude]'`) and switches the
+session's own model before each turn when the switch is worth its cache
+and context cost. It starts in shadow mode: it records what it would do
+without switching. See [docs/chat_routing.md](docs/chat_routing.md).
 
 ```python
 from actrouter_client import Advisor

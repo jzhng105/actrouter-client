@@ -30,6 +30,7 @@ new kind of request: a unit of work described in text, not a function.
 | **UserPromptSubmit hook** (Claude Code) | Sees each prompt; can add context for the model and a message for the user, but cannot switch the session's model | (1), automatically: routes each request, and has Claude do it on the routed model through a subagent |
 | **PreToolUse hook** (Claude Code) | Rewrites a tool call before it runs | (1), automatically: fills `model` on `Agent` calls that have none |
 | **Launcher** (`actrouter-route launch`) | Picks the model before the agent starts | (1) for a whole session, any CLI agent |
+| **Routed chat** (`actrouter-route chat`) | Owns the input loop; switches the main session's model before each turn through the agent's own API (Codex app-server `turn/start model`, Claude Agent SDK `set_model`) | (1) per turn, for the main model itself. See [chat_routing.md](chat_routing.md) |
 | LLM proxy (`ANTHROPIC_BASE_URL`, Codex `base_url`) | Rewrites every model request | **Not built.** See §6 |
 
 MCP alone is advisory: the agent must decide to call the tool. The hooks
@@ -104,7 +105,10 @@ src/actrouter_client/   actrouter-client: zero-dependency client
   metadata.py             FunctionInfo from Python source via ast
   mcp_server.py           MCP server            (extra: [mcp])
   claude_hook.py          Claude Code hook
-  cli.py                  actrouter-route, incl. `launch`
+  routing_policy.py       pinning and the per-turn switch decision (pure)
+  session_state.py        per-session state, transitions known to work
+  chat/                   actrouter-route chat: Codex and Claude adapters, REPL
+  cli.py                  actrouter-route, incl. `launch` and `chat`
 integrations/claude-code/ Claude Code plugin (.claude-plugin/)
 integrations/codex/       Codex plugin (.codex-plugin/)
 .claude-plugin/marketplace.json    Claude Code marketplace
