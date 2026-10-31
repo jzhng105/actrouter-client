@@ -394,3 +394,49 @@ def test_the_first_prompt_is_routed_once(state_dir) -> None:
     asyncio.run(go())
     assert router.tasks == ["search the repo for the retry policy"]
     assert s.last_decision.reason == "already_on"
+
+
+def test_a_refused_switch_keeps_the_session_and_runs_the_prompt(state_dir, ledger_file) -> None:
+    class Refusing(FakeAgent):
+        async def set_model(self, model):
+            self.set_calls.append(model)
+            raise RuntimeError(f"model {model} is not available")
+
+    s, agent = session(agent=Refusing())
+
+    async def go():
+        await s.start()
+        return await s.turn("search the repo for the retry policy")
+
+    result = asyncio.run(go())
+    assert result.status == "completed" and agent.prompts == [("search the repo for the retry policy",
+                                                               "claude-opus-5-5")]
+    assert Transitions("claude").known("claude-opus-5-5", "claude-haiku-5-5") is False
+    rec = turns(ledger_file)[0]
+    assert rec["switched"] is False and "not available" in rec["switch_error"]
+    assert ChatState.load("sess-1", "claude").current_model == "claude-opus-5-5"
+
+
+def test_a_switch_lost_with_the_connection_is_undone_after_reconnecting(state_dir, ledger_file) -> None:
+    class Dropping(FakeAgent):
+        async def run_turn(self, prompt, ui):
+            if self.model == "haiku":
+                return TurnResult(status="failed", error="gone", transport_lost=True)
+            return await super().run_turn(prompt, ui)
+
+        async def recover(self):
+            self.recovered += 1
+            self.set_calls.append(f"recover on {self.model}")  # rejoins on the model last selected
+
+    s, agent = session(agent=Dropping())
+
+    async def go():
+        await s.start()
+        await s.turn("search the repo for the retry policy")
+        await s.turn("yes, go ahead")
+
+    asyncio.run(go())
+    assert agent.set_calls == ["haiku", "recover on haiku", "opus"]
+    assert agent.model == "opus" and agent.prompts[-1] == ("yes, go ahead", "claude-opus-5-5")
+    assert ChatState.load("sess-1", "claude").current_model == "claude-opus-5-5"
+    assert Transitions("claude").known("claude-opus-5-5", "claude-haiku-5-5") is False

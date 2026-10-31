@@ -210,10 +210,20 @@ class RoutedSession:
         self.last_decision = decision
         before, before_host = st.current_model, st.current_host_model
         switched = ok = False
+        switch_error: Optional[str] = None
         if decision.switches and decision.applied_host_model:
-            await self.agent.set_model(decision.applied_host_model)
-            switched = True
-            self.ui.notice(f"{decision.task_type} -> {decision.applied_host_model} (was {before_host})")
+            try:
+                await self.agent.set_model(decision.applied_host_model)
+            except Exception as exc:  # noqa: BLE001 - the agent refused the model: keep the session
+                switch_error = str(exc) or type(exc).__name__
+                if before and decision.applied_model:
+                    self.transitions.record(before, decision.applied_model, False, source="runtime",
+                                            error=switch_error, at=int(self.clock()))
+                self.ui.notice(f"the agent refused {decision.applied_host_model} ({switch_error}); "
+                               f"staying on {before_host}, and this transition will not be used again")
+            else:
+                switched = True
+                self.ui.notice(f"{decision.task_type} -> {decision.applied_host_model} (was {before_host})")
         elif decision.reason == policy.SWITCH and decision.shadow:
             self.ui.notice(f"shadow: would switch to {decision.recommended_host_model} for "
                            f"{decision.task_type}; staying on {before_host}")
@@ -228,11 +238,6 @@ class RoutedSession:
                                         error=None if ok else result.error, at=int(now))
             if ok:
                 st.switched(decision.applied_model or "", decision.applied_host_model, now)
-            else:
-                self.ui.notice(f"the switch to {decision.applied_host_model} failed ({result.error}); "
-                               f"back on {before_host}, and this transition will not be used again")
-                if before_host and not result.transport_lost:
-                    await self.agent.set_model(before_host)
 
         if result.transport_lost:
             self.ui.notice("lost the connection to the agent; reconnecting to the same session")
@@ -241,9 +246,23 @@ class RoutedSession:
             except Exception as exc:  # noqa: BLE001
                 self.ui.notice(f"could not reconnect: {exc}")
 
+        reverted = False
+        if switched and not ok:
+            # after any reconnection: recover() rejoins on the model last selected
+            if before_host:
+                try:
+                    await self.agent.set_model(before_host)
+                    reverted = True
+                except Exception as exc:  # noqa: BLE001
+                    self.ui.notice(f"could not switch back to {before_host}: {exc}")
+            self.ui.notice(f"the switch to {decision.applied_host_model} failed ({result.error}); "
+                           + (f"back on {before_host}" if reverted else f"still on {self.agent.model}")
+                           + ", and this transition will not be used again")
+
         served = result.models[-1] if result.models else self.agent.model
         if switched and not ok:
-            served, switched = before_host, False
+            # the state follows the model the agent now runs on
+            served, switched = (before_host if reverted else self.agent.model), False
         served_id = self.advisor.baseline_id(served) if served else None
         st.observe_turn(
             model=served_id or st.current_model,
@@ -259,11 +278,11 @@ class RoutedSession:
             st.session_id = self.agent.session_id  # known after the first answer (Claude)
         st.last_prompt, st.last_reply = prompt, result.reply
         st.save()
-        self._record(decision, result, switched, served_id)
+        self._record(decision, result, switched, served_id, switch_error)
         return result
 
     def _record(self, decision: policy.Decision, result: TurnResult, switched: bool,
-                served_id: Optional[str]) -> None:
+                served_id: Optional[str], switch_error: Optional[str] = None) -> None:
         assert self.state is not None
         total = result.total()
         catalog = self._catalog()
@@ -285,6 +304,7 @@ class RoutedSession:
             turn=self.state.turn,
             mode=self.cfg.mode,
             switched=switched,
+            switch_error=switch_error,
             **decision.record(),
             status=result.status,
             error=result.error,
