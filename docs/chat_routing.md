@@ -59,10 +59,23 @@ Options: `--route` (default `shadow`, or `$ACTROUTER_CHAT_ROUTING`),
 
 ## Choosing the routing a prompt follows
 
-This is shared with the Claude Code hook (`routing_policy.choose_route`;
-the hook was refactored onto it, and its behaviour is unchanged):
+This is shared with the Claude Code hook (`routing_policy.choose_route`),
+so a prompt follows the same routing whether `chat` switches the model or
+the hook only advises:
 
 * a prompt the router classifies with confidence ≥ 0.5 routes on its own words;
+* a question about the agent's own work in the conversation ("did you run
+  the tests?", `about_own_work`) is not routed at all: only the model that
+  did the work can answer. The model stays (`conversation`) and the pin is
+  kept;
+* only a short prompt (≤ 6 words), or one that opens with an assent ("yes",
+  "go ahead", "the second one"), counts as a follow-up (`continues`). A
+  longer prompt the router cannot read ("Commit the working tree changes
+  with a sensible message") is a request of its own: it is recorded as
+  `routed_on: unrouted`, keeps the model (`no_route`), and does not inherit
+  the pin, which stays for a real follow-up. The hook records it as an
+  `unrouted` event and, with `delegate`, tells Claude to call `route_task`
+  once it knows what the work is;
 * a follow-up ("yes, go ahead") follows the conversation's **pin**;
 * with nothing pinned, a follow-up is routed on the exchange it continues: the
   follow-up, the agent's last reply and the request before it
@@ -83,7 +96,8 @@ and the first that fails gives the reason:
 
 | Reason | Meaning |
 |---|---|
-| `no_route` | routing gave nothing usable (low confidence, API down, mode `off`) |
+| `no_route` | routing gave nothing usable (low confidence, API down, mode `off`, or a request the router cannot read: `routed_on: unrouted`) |
+| `conversation` | a question about the agent's own work: not routed, the pin is kept |
 | `manual_model` | the person chose the model (`/model`, `--model`) |
 | `already_on` | the recommendation is the model running |
 | `follow_up` | the prompt followed a pin or the previous exchange |

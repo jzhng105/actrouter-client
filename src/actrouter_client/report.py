@@ -318,7 +318,8 @@ def _chat_summary(turns: list[dict[str, Any]]) -> dict[str, Any]:
         reasons[str(t.get("reason") or "?")] += 1
         if t.get("switched"):
             out["switched"] += 1
-        if t.get("reason") == "switch":
+        # a refused or reverted switch ran nothing on the other model: no saving
+        if t.get("reason") == "switch" and (t.get("switched") or t.get("shadow")):
             if t.get("shadow"):
                 out["would_switch_in_shadow"] += 1
             saving = (t.get("gate") or {}).get("savings_usd")

@@ -1175,7 +1175,7 @@
  "GET /v1/task-types null": {
   "status": 200,
   "body": {
-   "version": 5,
+   "version": 6,
    "families": {
     "code": "Writing, reviewing or transforming source code.",
     "text": "Transforming or condensing natural-language text.",
@@ -1456,7 +1456,7 @@
    ],
    "estimated_cost_usd": 6e-05,
    "estimated_latency_ms": 22,
-   "request_id": "3b21a678c2b245dbae066f16ef1e1129",
+   "request_id": "0d0a9ccea2714f14ab8dc20a7b4cbc7e",
    "classification": {
     "task_type": "classification",
     "family": "structured",
@@ -1472,7 +1472,7 @@
      "docstring(title):classify x1",
      "returns:Literal[ x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -1528,7 +1528,7 @@
    ],
    "estimated_cost_usd": 6e-05,
    "estimated_latency_ms": 22,
-   "request_id": "e8ab492c5a5c453d88d7d1bca9423f04",
+   "request_id": "b5352837a92e42ab94cadced49e3d68b",
    "classification": {
     "task_type": "classification",
     "family": "structured",
@@ -1544,7 +1544,7 @@
      "docstring(title):classify x1",
      "returns:Literal[ x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -1600,7 +1600,7 @@
    ],
    "estimated_cost_usd": 0.0006000000000000001,
    "estimated_latency_ms": 22,
-   "request_id": "b6637dbcc2584311b750a2c2c135b5c8",
+   "request_id": "2c3c6b1620fc401490c0b9da69f68376",
    "classification": {
     "task_type": "translation",
     "family": "text",
@@ -1616,7 +1616,7 @@
      "name:translate x1",
      "params:locale x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -1646,7 +1646,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "e8c47f9b83064b919a95d7a200649f4c",
+   "request_id": "fa624425c9d944808cf2f89a34231b00",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -1660,7 +1660,7 @@
     "evidence": [
      "name:where x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -1699,7 +1699,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "6ca8d7fec43c45589596d9d9739e3d65",
+   "request_id": "af4d8cb050784a27a913f9b3af907081",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -1713,7 +1713,7 @@
     "evidence": [
      "name:where x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -1726,6 +1726,64 @@
    "token_estimate": {
     "prompt_tokens": 30000,
     "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"baseline_model\":\"claude-opus-5-5\",\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Commit the working tree changes with a sensible message.\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.573,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.16",
+      "task_source=classifier",
+      "quality_fit=0.40",
+      "tier_fit=0.96",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.12,
+   "estimated_latency_ms": 10560,
+   "request_id": "fbb46d5ec5de4afca489575729bf126e",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.1621,
+    "source": "classifier",
+    "accepted": false,
+    "family_confidence": 0.1621,
+    "scores": {
+     "debugging": 0.162,
+     "code_generation": 0.162,
+     "math": 0.132,
+     "documentation": 0.112,
+     "planning": 0.084,
+     "summarization": 0.073
+    },
+    "evidence": [
+     "classifier: debugging p=0.16"
+    ],
+    "inventory_version": 6,
+    "cached": false
+   },
+   "baseline": {
+    "model_id": "claude-opus-5-5",
+    "known": true,
+    "estimated_cost_usd": 0.48,
+    "estimated_latency_ms": 30720
+   },
+   "estimated_savings_usd": 0.36,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
     "basis": "prior"
    }
   }
@@ -1778,7 +1836,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "19163648576f463381a9c5eebfb5fad2",
+   "request_id": "86a6113d855041849e3d96e38139e74c",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -1795,7 +1853,7 @@
      "docstring(title):failing test x1",
      "docstring(title):fix the x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -1834,7 +1892,7 @@
    ],
    "estimated_cost_usd": 0.0055,
    "estimated_latency_ms": 4730,
-   "request_id": "6adbff7bf3fb471598ee58fbad8355a2",
+   "request_id": "5effac7cd6a84ffabe7e009df265ed88",
    "classification": {
     "task_type": "chat",
     "family": "dialogue",
@@ -1852,7 +1910,7 @@
     "evidence": [
      "classifier: chat p=0.86"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -1891,7 +1949,7 @@
    ],
    "estimated_cost_usd": 0.065,
    "estimated_latency_ms": 4950,
-   "request_id": "28cafe3922df4c9abe3efb17a2724c09",
+   "request_id": "acca6c4df0e54d9a853aeac27b1244b3",
    "classification": {
     "task_type": "documentation",
     "family": "text",
@@ -1905,7 +1963,7 @@
     "evidence": [
      "docstring(title):release notes x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -1944,7 +2002,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "be2380aeeafe412e9f06e2a84f52012a",
+   "request_id": "f6c81cbcffd5453a950a1f6fb531981c",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -1956,7 +2014,7 @@
     "evidence": [
      "classifier: unknown p=0.95"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -1995,7 +2053,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "66e5fbb4bfcb44f7bfb3dd02391dcd6e",
+   "request_id": "4b949ff6220f47628e66bb9dcb98839c",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2007,7 +2065,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2046,7 +2104,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "32ede56317244b99aef3d206811dfa42",
+   "request_id": "8013df57effb458a8396e32b62c0fc31",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2058,7 +2116,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2097,7 +2155,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "5d944ab552884afb8cd116a8a9076bc2",
+   "request_id": "8f3a67b230f74fddad408bed0f2fbf79",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2111,7 +2169,7 @@
     "evidence": [
      "name:where x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2150,7 +2208,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "d0a6a8dc2b154096a6d04f8380348cfb",
+   "request_id": "11b3fa66399244c7917ec1ce5be93684",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2165,7 +2223,7 @@
      "docstring(title):search the x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2204,7 +2262,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "16abd483707747ee9e0968c15950d13b",
+   "request_id": "9848fde641db4844bb62dc923f17739f",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2216,7 +2274,7 @@
     "evidence": [
      "classifier: unknown p=0.96"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2255,7 +2313,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "e366a323cfe9494aa971726f68c00342",
+   "request_id": "5053ad8800bf4fd0908fe5c8a0236cea",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2267,7 +2325,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2306,7 +2364,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "e888c243a25d4d009885ff227da1dc27",
+   "request_id": "31c9866f1f474c1cba3dac2e943da02e",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2320,7 +2378,7 @@
     "evidence": [
      "declared: task_kind=code_search"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2359,7 +2417,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "2ad3a700faeb402cbee1840106b95b90",
+   "request_id": "327f5b0508f741e3886f89bb4f2a2485",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -2373,7 +2431,7 @@
     "evidence": [
      "name:failing x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2412,7 +2470,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "40e6e6c4cbaa428d95d016cb99d1b70c",
+   "request_id": "78c90d941d414b5197512adc3ff7eb46",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2426,7 +2484,7 @@
     "evidence": [
      "name:where x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2465,7 +2523,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "8aa33d24096d458a8e2f7d11447fe186",
+   "request_id": "f74669cca626466e88be7c6e84468fb7",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2477,7 +2535,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2516,7 +2574,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "3a4d0db3deb7478b99dc80ddd5e85c3d",
+   "request_id": "50ae3358ca204f65a182afd5e9d3f0bf",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2532,7 +2590,7 @@
      "name:where x1",
      "docstring(title):find where x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2597,7 +2655,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "70591e2263874b88ac49c395e15e3dca",
+   "request_id": "7cff5bf8a6c24d2aacb88022c73174eb",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2616,7 +2674,7 @@
      "docstring(title):usages of x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": {
@@ -2655,7 +2713,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "b6f1d96341874ca9b4d2c4797cd51214",
+   "request_id": "157fbdfff235498a96b946e8a16bd6ce",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -2672,7 +2730,7 @@
      "docstring(title):debug x1",
      "docstring(title):flaky x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -2732,7 +2790,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "c2c0de2d0fce451f8e3da4ecfab8efd9",
+   "request_id": "e61c9b2f77eb4173b5a1cbfa40439831",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -2749,7 +2807,7 @@
      "docstring(title):debug x1",
      "docstring(title):flaky x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -2783,7 +2841,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "4d834127ec884b93836dac7b7b1f3172",
+   "request_id": "a3f3c49dbaef4ea8b847a6f5b5d8004a",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2797,7 +2855,7 @@
     "evidence": [
      "declared: task_kind=code_search"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -2831,7 +2889,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "97019afe322e492288a8547853796399",
+   "request_id": "9353abfc3bdb495e8434542fd67dcb30",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2845,7 +2903,7 @@
     "evidence": [
      "name:find x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -2853,6 +2911,52 @@
    "token_estimate": {
     "prompt_tokens": 30000,
     "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Handle it\",\"title\":\"Handle it\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "5f0d253463b34c3dab6017e6e78f30e0",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.46"
+    ],
+    "inventory_version": 6,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
     "basis": "prior"
    }
   }
@@ -2879,7 +2983,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "8cc05be21db0411a905f6b986c0ecaa4",
+   "request_id": "e9e6bad5d7054242b0f06c0d07bd3e7e",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2897,7 +3001,7 @@
      "docstring(title):usages of x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -2957,7 +3061,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "6c971ecf34314238bfe5f6ddbd1372b6",
+   "request_id": "1b0d09d83b25401f9c659539fca1ab26",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2976,7 +3080,7 @@
      "docstring(title):usages of x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -3010,7 +3114,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "d46f1f9cf846401e9f1b61a841b609bf",
+   "request_id": "9d144383baee426bb6156377cb58d306",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -3024,7 +3128,7 @@
     "evidence": [
      "name:failing x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -3058,7 +3162,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "e9b7dbc018dc414ba67e37167fbb1f32",
+   "request_id": "befba7b294a042f895f683d773f3475c",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -3072,7 +3176,7 @@
     "evidence": [
      "name:where x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -3132,7 +3236,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "96fc6a2a9f4146e1b00e01d65cefc377",
+   "request_id": "f060b683d3484a12b006d41e369b285e",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -3148,7 +3252,7 @@
      "name:failing x1",
      "docstring(title):fix the x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -3182,7 +3286,7 @@
    ],
    "estimated_cost_usd": 0.009000000000000001,
    "estimated_latency_ms": 1980,
-   "request_id": "710bdebb629c4e18b640fc166b8da780",
+   "request_id": "24b14fcd5cba451eab0bcbc3ad698955",
    "classification": {
     "task_type": "summarization",
     "family": "text",
@@ -3197,7 +3301,7 @@
      "name:summarize x1",
      "docstring(title):summarize x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,
@@ -3217,11 +3321,11 @@
    "ranking": [
     {
      "model_id": "gpt-5.4-mini",
-     "score": 0.6958,
+     "score": 0.6965,
      "reasons": [
       "task=code_generation",
-      "task_conf=0.90",
-      "task_source=classifier",
+      "task_conf=0.91",
+      "task_source=rules",
       "quality_fit=0.67",
       "tier_fit=0.77",
       "cost_fit=0.69",
@@ -3230,11 +3334,11 @@
     },
     {
      "model_id": "gpt-5.6",
-     "score": 0.6807,
+     "score": 0.6818,
      "reasons": [
       "task=code_generation",
-      "task_conf=0.90",
-      "task_source=classifier",
+      "task_conf=0.91",
+      "task_source=rules",
       "quality_fit=0.68",
       "tier_fit=0.98",
       "cost_fit=0.14",
@@ -3243,11 +3347,11 @@
     },
     {
      "model_id": "gpt-5.5",
-     "score": 0.6687,
+     "score": 0.6698,
      "reasons": [
       "task=code_generation",
-      "task_conf=0.90",
-      "task_source=classifier",
+      "task_conf=0.91",
+      "task_source=rules",
       "quality_fit=0.68",
       "tier_fit=0.98",
       "cost_fit=0.00",
@@ -3256,11 +3360,11 @@
     },
     {
      "model_id": "gpt-5-mini",
-     "score": 0.4498,
+     "score": 0.4495,
      "reasons": [
       "task=code_generation",
-      "task_conf=0.90",
-      "task_source=classifier",
+      "task_conf=0.91",
+      "task_source=rules",
       "quality_fit=0.30",
       "tier_fit=0.52",
       "cost_fit=1.00",
@@ -3270,26 +3374,22 @@
    ],
    "estimated_cost_usd": 0.096,
    "estimated_latency_ms": 12320,
-   "request_id": "8689126b159d44ab9fcb3b12ccb197ea",
+   "request_id": "5713f836be2941d2a23120930fc31bb9",
    "classification": {
     "task_type": "code_generation",
     "family": "code",
-    "confidence": 0.9025,
-    "source": "classifier",
+    "confidence": 0.9083,
+    "source": "rules",
     "accepted": true,
-    "family_confidence": 0.9025,
+    "family_confidence": 0.9083,
     "scores": {
-     "code_generation": 0.752,
-     "documentation": 0.045,
-     "code_search": 0.033,
-     "classification": 0.027,
-     "chat": 0.019
+     "code_generation": 10.0
     },
     "evidence": [
-     "classifier: code_generation p=0.75",
-     "name:implement x1"
+     "name:implement x1",
+     "docstring(title):implement a x1"
     ],
-    "inventory_version": 5,
+    "inventory_version": 6,
     "cached": false
    },
    "baseline": null,

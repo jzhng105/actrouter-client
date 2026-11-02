@@ -219,6 +219,23 @@ def test_routing_failure_keeps_the_model(state_dir, ledger_file) -> None:
     assert sum("routing unavailable" in n for n in s.ui.notices) == 1
 
 
+def test_a_router_that_raises_keeps_the_model(state_dir, ledger_file) -> None:
+    class Broken(StubRouter):
+        def route_task(self, *a, **kw):  # the router raising something unexpected
+            raise RuntimeError("engine crashed")
+
+    s, agent = session(mode="shadow", router=Broken())
+
+    async def go():
+        await s.start()
+        return await s.turn("search the repo")
+
+    assert asyncio.run(go()).status == "completed"
+    assert agent.prompts == [("search the repo", "claude-opus-5-5")]
+    assert turns(ledger_file)[0]["reason"] == "no_route"
+    assert any("engine crashed" in n for n in s.ui.notices)
+
+
 def test_off_does_not_route(state_dir, ledger_file) -> None:
     router = StubRouter()
     s, agent = session(mode="off", router=router)
@@ -417,6 +434,26 @@ def test_a_refused_switch_keeps_the_session_and_runs_the_prompt(state_dir, ledge
     assert ChatState.load("sess-1", "claude").current_model == "claude-opus-5-5"
 
 
+def test_a_refused_switch_saves_nothing_in_the_report(state_dir, ledger_file) -> None:
+    from actrouter_client.report import load
+
+    class Refusing(FakeAgent):
+        async def set_model(self, model):
+            raise RuntimeError(f"model {model} is not available")
+
+    s, _ = session(agent=Refusing())
+
+    async def go():
+        await s.start()
+        await s.turn("search the repo for the retry policy")
+
+    asyncio.run(go())
+    assert turns(ledger_file)[0]["reason"] == "switch"
+    chat = load(0, ledger_file, CATALOG)["chat"]
+    assert chat["switched"] == 0 and chat["would_switch_in_shadow"] == 0
+    assert chat["estimated_savings_of_switches_usd"] == 0
+
+
 def test_a_switch_lost_with_the_connection_is_undone_after_reconnecting(state_dir, ledger_file) -> None:
     class Dropping(FakeAgent):
         async def run_turn(self, prompt, ui):
@@ -440,3 +477,40 @@ def test_a_switch_lost_with_the_connection_is_undone_after_reconnecting(state_di
     assert agent.model == "opus" and agent.prompts[-1] == ("yes, go ahead", "claude-opus-5-5")
     assert ChatState.load("sess-1", "claude").current_model == "claude-opus-5-5"
     assert Transitions("claude").known("claude-opus-5-5", "claude-haiku-5-5") is False
+
+
+def test_a_longer_prompt_the_router_cannot_read_does_not_follow_the_pin(state_dir, ledger_file) -> None:
+    router = StubRouter()
+    s, agent = session(router=router)
+
+    async def go():
+        await s.start()
+        await s.turn("search the repo for the retry policy")
+        pinned = dict(s.state.pin)
+        asked = len(router.tasks)
+        await s.turn("Commit the working tree changes with a sensible message.")
+        return pinned, asked
+
+    pinned, asked = asyncio.run(go())
+    rec = turns(ledger_file)[-1]
+    assert rec["reason"] == "no_route" and rec["routed_on"] == "unrouted"
+    assert len(router.tasks) == asked + 1  # its own words only: no pin, no exchange
+    assert s.state.pin == pinned  # a real follow-up still finds it
+
+
+def test_a_question_about_the_agents_work_stays_and_keeps_the_pin(state_dir, ledger_file) -> None:
+    router = StubRouter()
+    s, agent = session(router=router)
+
+    async def go():
+        await s.start()
+        await s.turn("search the repo for the retry policy")
+        pinned, model, asked = dict(s.state.pin), agent.model, len(router.tasks)
+        await s.turn("did you search the tests directory too?")
+        return pinned, model, asked
+
+    pinned, model, asked = asyncio.run(go())
+    rec = turns(ledger_file)[-1]
+    assert rec["reason"] == "conversation" and rec["switched"] is False
+    assert len(router.tasks) == asked  # not routed at all
+    assert agent.model == model and s.state.pin == pinned

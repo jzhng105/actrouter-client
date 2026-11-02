@@ -5,7 +5,9 @@
 
 1. routes the prompt with ActRouter (failing open: no answer keeps the model);
 2. picks the routing the prompt follows (its own, the pinned one, or the
-   exchange it continues: :func:`~actrouter_client.routing_policy.choose_route`);
+   exchange it continues: :func:`~actrouter_client.routing_policy.choose_route`).
+   A longer prompt the router cannot read is a request of its own and is not
+   routed; a question about the agent's own work is not routed and keeps the pin;
 3. decides whether to switch (:func:`~actrouter_client.routing_policy.decide`);
 4. switches through the agent's own call when the decision says so;
 5. runs the turn, then folds what it used into the session's state
@@ -29,7 +31,6 @@ from actrouter_client import routing_policy as policy
 from actrouter_client import transcript
 from actrouter_client.advisor import Advisor
 from actrouter_client.chat.base import Agent, TurnResult, UI
-from actrouter_client.client import ActRouterError
 from actrouter_client.session_state import ChatState, Transitions
 
 MODES = ("shadow", "on", "off")
@@ -120,7 +121,7 @@ class RoutedSession:
         which makes every price unknown, so the model stays."""
         try:
             return {str(m.get("id")): m for m in self.advisor.catalog()}
-        except (ActRouterError, ValueError, OSError):
+        except Exception:  # noqa: BLE001 - routing is advisory: never end the session
             return {}
 
     def _chars(self) -> int:
@@ -142,7 +143,7 @@ class RoutedSession:
     def _ask(self, text: str, baseline: Optional[str]) -> Optional[dict[str, Any]]:
         try:
             advice = self.advisor.for_task(text, preference=self.cfg.preference, top_k=1, baseline=baseline)
-        except (ActRouterError, ValueError, OSError) as exc:
+        except Exception as exc:  # noqa: BLE001 - routing is advisory: whatever it raises, keep the model
             if not self._routing_failed:
                 self.ui.notice(f"routing unavailable, keeping the model: {exc}")
                 self._routing_failed = True
@@ -159,6 +160,14 @@ class RoutedSession:
             return policy.Decision(policy.NO_ROUTE, current_model=current, recommended_model=None,
                                    recommended_host_model=None, applied_model=current,
                                    applied_host_model=current_host)
+        if policy.about_own_work(prompt):
+            # A question about the agent's own work ("did you run the
+            # tests?"): only this model can answer, so it stays, and the
+            # conversation keeps its pin.
+            self._prerouted = None
+            return policy.Decision(policy.CONVERSATION, current_model=current, recommended_model=None,
+                                   recommended_host_model=None, applied_model=current,
+                                   applied_host_model=current_host)
         if self._prerouted and self._prerouted[0] == prompt:
             own = self._prerouted[1]
         else:
@@ -166,9 +175,9 @@ class RoutedSession:
         self._prerouted = None
         advice, routed_on = policy.choose_route(
             own, st.pin if own is None else None,
-            baseline=current_host, baseline_id=current,
+            baseline=current_host, baseline_id=current, prompt=prompt,
         )
-        if advice is None:
+        if advice is None and routed_on == policy.ROUTED_ON_EXCHANGE:
             text = policy.continuation_text(prompt, st.last_prompt, st.last_reply, chars, transcript.compress)
             advice = self._route(text, current_host) if text else None
         catalog = self._catalog()
@@ -184,7 +193,7 @@ class RoutedSession:
             observed=dict(st.observed) if st.observed else None,
         )
         decision = policy.decide(
-            advice, routed_on if advice else None, view, catalog,
+            advice, routed_on if advice or routed_on == policy.ROUTED_ON_NONE else None, view, catalog,
             new_prompt_tokens=estimate_tokens(prompt),
             cfg=self.cfg.policy,
             transition_ok=self.transitions.known,

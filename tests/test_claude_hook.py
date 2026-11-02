@@ -144,7 +144,6 @@ def test_prompt_already_on_the_right_model_is_left_alone(claude: Advisor, tmp_pa
 @pytest.mark.parametrize(
     "ev",
     [
-        prompt_event("yes, go ahead"),  # cannot be classified, and continues nothing
         prompt_event("/model opus"),  # a slash command
         prompt_event(""),
         prompt_event("where is the retry policy configured?", source="loop_wakeup"),
@@ -154,6 +153,24 @@ def test_prompt_already_on_the_right_model_is_left_alone(claude: Advisor, tmp_pa
 def test_prompts_left_alone(ev: dict, claude: Advisor, on_opus: str) -> None:
     ev["transcript_path"] = on_opus
     assert route_prompt(ev, claude) is None
+
+
+def test_unclassified_prompt_asks_claude_to_route_it(claude: Advisor, on_opus: str, ledger_file) -> None:
+    # cannot be classified, and continues nothing: Claude routes it once it knows the work
+    out = route_prompt(prompt_event("yes, go ahead", on_opus), claude)
+    assert "systemMessage" not in out  # nothing was routed, so nothing to tell the user
+    context = out["hookSpecificOutput"]["additionalContext"]
+    assert "route_task" in context and "ToolSearch" in context
+    [unrouted] = ledger_events(ledger_file)
+    assert unrouted["kind"] == "unrouted" and unrouted["mode"] == "delegate"
+    assert "go ahead" not in json.dumps(unrouted)  # the decision is recorded, never the prompt
+
+
+def test_unclassified_prompt_is_only_recorded_when_advising(claude: Advisor, on_opus: str, ledger_file,
+                                                            monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ACTROUTER_PROMPT_ROUTING", "advise")
+    assert route_prompt(prompt_event("yes, go ahead", on_opus), claude) is None
+    assert [e["kind"] for e in ledger_events(ledger_file)] == ["unrouted"]
 
 
 NOTIFICATIONS = [
@@ -359,9 +376,54 @@ def test_unpinned_follow_up_routes_what_the_agent_proposed(claude: Advisor, tmp_
     assert "documentation" in out["hookSpecificOutput"]["additionalContext"]
 
 
-def test_small_talk_follow_up_is_left_alone(claude: Advisor, tmp_path) -> None:
+def test_a_new_request_the_router_cannot_read_does_not_inherit_the_pin(claude: Advisor, on_opus: str,
+                                                                      ledger_file) -> None:
+    from actrouter_client.claude_hook import _prompt_route
+
+    route_prompt(prompt_event("where is the retry policy configured?", on_opus), claude)
+    pinned = _prompt_route("s1")
+    # used to be delegated as the pinned code search -> haiku
+    out = route_prompt(prompt_event("Commit the working tree changes with a sensible message.", on_opus), claude)
+    assert "systemMessage" not in out and "route_task" in out["hookSpecificOutput"]["additionalContext"]
+    assert ledger_events(ledger_file)[-1]["kind"] == "unrouted"
+    assert _prompt_route("s1") == pinned  # a real follow-up still finds it
+
+
+@pytest.mark.parametrize("question", ["did you use actrouter in the work?", "Why did you skip the tests?",
+                                      "have you committed it yet?"])
+def test_questions_about_the_agents_work_are_not_routed(claude: Advisor, on_opus: str, ledger_file,
+                                                        question: str) -> None:
+    from actrouter_client.claude_hook import _prompt_route
+
+    route_prompt(prompt_event("where is the retry policy configured?", on_opus), claude)
+    pinned = _prompt_route("s1")
+    assert route_prompt(prompt_event(question, on_opus), claude) is None
+    assert ledger_events(ledger_file)[-1]["kind"] == "conversation"
+    assert _prompt_route("s1") == pinned
+
+
+def test_fork_subagents_are_recorded_not_routed(claude: Advisor, ledger_file) -> None:
+    # a fork runs on its parent's model whatever `model` says
+    ev = {**event(description="Build the web UI", prompt="Build the UI in frontend/", subagent_type="fork"),
+          "session_id": "s1", "tool_use_id": "t9"}
+    assert decide(ev, claude) is None
+    skipped = ledger_events(ledger_file)[-1]
+    assert skipped["kind"] == "skipped" and skipped["reason"] == "inherits_model"
+
+
+def test_a_subagent_the_router_can_only_guess_at_keeps_its_model(claude: Advisor, ledger_file) -> None:
+    ev = {**event(description="Handle it", prompt="Take care of the remaining items"),
+          "session_id": "s1", "tool_use_id": "t10"}
+    assert decide(ev, claude) is None
+    skipped = ledger_events(ledger_file)[-1]
+    assert skipped["kind"] == "skipped" and skipped["reason"] == "low_confidence"
+
+
+def test_small_talk_follow_up_is_not_routed(claude: Advisor, tmp_path) -> None:
     path = conversation(tmp_path, "hi", "Hello! How can I help?", claude.baseline_id("opus"))
-    assert route_prompt(prompt_event("thanks", path), claude) is None
+    out = route_prompt(prompt_event("thanks", path), claude)
+    assert "systemMessage" not in out  # no model is named or delegated to
+    assert "route_task" in out["hookSpecificOutput"]["additionalContext"]
 
 
 def test_last_exchange_skips_tool_results_tags_and_the_current_prompt(tmp_path) -> None:

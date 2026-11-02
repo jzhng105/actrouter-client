@@ -7,13 +7,20 @@ differs from the one the session runs on, the hook says so to the user
 default -- tells Claude to do substantial work on the routed model through a
 subagent. A follow-up the router cannot classify on its own words ("yes, go
 ahead") stays with the routing of the request it continues: each routing
-decision pins the conversation until a prompt routes on its own. With nothing
+decision pins the conversation until a prompt routes on its own. Only a
+short prompt, or one that opens with an assent, counts as a follow-up; a
+longer one the router cannot read is a request of its own and is recorded as
+``unrouted`` instead. A question about the agent's own work in the
+conversation ("did you use ...?") is never routed and keeps the pin. With nothing
 pinned (a new or resumed session), the follow-up is routed on the user's
 previous request and a compressed form of the agent's last reply, from the
 transcript (:mod:`actrouter_client.transcript`). Slash commands, and
 messages that are only tagged blocks Claude Code delivers as prompts
 (``<task-notification>`` when a background task finishes), are left alone
-and keep the conversation's pin. Work that lives in the conversation itself
+and keep the conversation's pin. A prompt that routes on neither its own words
+nor the exchange it continues is recorded as ``unrouted``, and with
+``delegate`` Claude is told to call ``route_task`` itself once it knows what
+the work is. Work that lives in the conversation itself
 (``chat``, by default) is only advised, never delegated: a subagent cannot
 see the conversation. ``SessionStart`` and
 ``PostModelSwitch`` record the session's model, so the first prompt, and the
@@ -22,7 +29,9 @@ first after ``/model``, are compared with the right one.
 ``PreToolUse``: when Claude Code spawns a subagent through the ``Agent`` tool
 without choosing a model, this hook asks ActRouter and fills in ``model``
 (``haiku`` for a codebase search, ``sonnet``/``opus`` for debugging, ...). A
-model the agent or the user chose explicitly is never touched. Before
+model the agent or the user chose explicitly is never touched, and a
+``fork`` subagent, which always runs on its parent's model, is recorded as
+skipped rather than routed. Before
 routing it works out the *baseline* -- the model the subagent would have run
 on (:func:`actrouter_client.baseline.claude_code_subagent`) -- and records
 both in the routing ledger (:mod:`actrouter_client.ledger`).
@@ -50,6 +59,9 @@ Environment:
                                   when a prompt fits another model
 ``ACTROUTER_PROMPT_MIN_CONFIDENCE`` classification confidence below which a
                                   prompt is left alone (default 0.5)
+``ACTROUTER_SUBAGENT_MIN_CONFIDENCE`` classification confidence below which a
+                                  subagent keeps the model it would run on
+                                  (default 0.5)
 ``ACTROUTER_PROMPT_ADVISE_TASKS`` task types only advised, never delegated
                                   (comma-separated; default chat)
 ``ACTROUTER_HOOK_PROMPT_CHARS``  prompt characters to include (prompt hook:
@@ -110,6 +122,10 @@ _TAGGED_BLOCK = re.compile(r"<([A-Za-z][\w-]*)(?:\s[^>]*)?>.*?</\1>|<[A-Za-z][\w
 
 #: task types that live in the conversation, so delegating them cannot work
 ADVISE_TASKS = "chat"
+
+#: subagent types that run on the parent's model whatever ``model`` says, so
+#: routing them changes nothing and would record a switch that never happened
+INHERITING_SUBAGENTS = frozenset({"fork"})
 
 
 def _is_harness_message(prompt: str) -> bool:
@@ -185,6 +201,27 @@ def record_session_model(event: dict[str, Any]) -> None:
     _save_state(event.get("session_id"), "model", {"model": str(model)} if model else None)
 
 
+def _unrouted(session_id: Any, mode: str) -> Optional[dict[str, Any]]:
+    """The answer for a prompt the router could not classify from its words:
+    record it, so the gap shows in the ledger, and -- when delegating -- have
+    Claude route the work itself once it knows what the work is."""
+    ledger.record("unrouted", surface="prompt_hook", host="claude-code", session_id=session_id, mode=mode)
+    if mode != "delegate":
+        return None
+    return {
+        "hookSpecificOutput": {
+            "hookEventName": "UserPromptSubmit",
+            "additionalContext": (
+                "ActRouter could not classify this request from its words. If it needs more "
+                "than a few tool calls, call the actrouter MCP server's route_task tool (load "
+                "it with ToolSearch first if it is deferred) once you know what the work is: "
+                "one sentence on its kind, with current_model set to your own model. Follow "
+                "its host_model before doing the work, as you would a routed request."
+            ),
+        },
+    }
+
+
 def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional[dict[str, Any]]:
     """The hook's JSON answer for one UserPromptSubmit `event`, or None to
     leave the prompt alone."""
@@ -202,6 +239,10 @@ def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Op
     advisor = _advisor(advisor)
     prompt_chars = _env_int("ACTROUTER_HOOK_PROMPT_CHARS", PROMPT_HOOK_CHARS)
     if prompt_chars <= 0:
+        return None
+    if policy.about_own_work(prompt):
+        # Not new work, so the conversation keeps its pin.
+        ledger.record("conversation", surface="prompt_hook", host="claude-code", session_id=session_id, mode=mode)
         return None
 
     known = (_load_state(session_id, "model") or {}).get("model")
@@ -223,7 +264,10 @@ def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Op
     advice, routed_on = policy.choose_route(
         own, _prompt_route(session_id) if own is None else None,
         baseline=baseline, baseline_id=advisor.baseline_id(baseline) if own is None else None,
+        prompt=prompt,
     )
+    if routed_on == policy.ROUTED_ON_NONE:
+        return _unrouted(session_id, mode)  # a request of its own the router cannot read
     if advice is None:
         # A follow-up with nothing routed before it (a new session, a resumed
         # one): route the work it continues -- what the agent last proposed,
@@ -231,10 +275,10 @@ def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Op
         previous, reply = transcript.last_exchange(event.get("transcript_path"), prompt)
         context = policy.continuation_text(prompt, previous, reply, chars, transcript.compress)
         if not context:
-            return None
+            return _unrouted(session_id, mode)
         advice = route(context)
         if advice is None:
-            return None
+            return _unrouted(session_id, mode)
     model = advice["host_model"]
     stays = bool(current) and advisor.baseline_id(current) == advice["model"]
     # Pin the conversation to this routing, also when it keeps the session's
@@ -308,6 +352,9 @@ def decide(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional
         "tool_use_id": event.get("tool_use_id"),
         "subagent_type": str(tool_input.get("subagent_type") or "") or None,
     }
+    if str(tool_input.get("subagent_type") or "").strip().lower() in INHERITING_SUBAGENTS:
+        ledger.record("skipped", surface="claude_hook", host="claude-code", reason="inherits_model", **context)
+        return None
     if tool_input.get("model"):
         model = str(tool_input["model"])
         route = _prompt_route(event.get("session_id"))
@@ -339,16 +386,35 @@ def decide(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional
         text = f"{text}. {prompt[:prompt_chars]}"
 
     baseline, baseline_source = baselines.claude_code_subagent(event)
-    advice = advisor.for_task(
-        text[:2000],
-        title=description[:120] or None,
-        task_kind=SUBAGENT_TASKS.get(subagent.lower()),
-        preference=os.environ.get("ACTROUTER_HOOK_PREFERENCE", "balanced"),
-        top_k=1,
-        baseline=baseline,
-    )
+
+    def ask(words: str) -> dict[str, Any]:
+        return advisor.for_task(
+            words[:2000],
+            title=description[:120] or None,
+            task_kind=SUBAGENT_TASKS.get(subagent.lower()),
+            preference=os.environ.get("ACTROUTER_HOOK_PREFERENCE", "balanced"),
+            top_k=1,
+            baseline=baseline,
+        )
+
+    def sure(answer: dict[str, Any]) -> float:
+        return float(answer.get("task_confidence") or 0.0)
+
+    min_confidence = _env_float("ACTROUTER_SUBAGENT_MIN_CONFIDENCE", 0.5)
+    advice = ask(text)
+    if sure(advice) < min_confidence and description and text != description:
+        # A long brief can bury the task under incidental words; its short
+        # description often names the work plainly ("Write AWS CDK infrastructure").
+        by_description = ask(description)
+        if sure(by_description) > sure(advice):
+            advice = by_description
     model = advice.get("host_model")
     if not model:
+        return None
+    if sure(advice) < min_confidence:
+        # A guess: leave the subagent on the model it would run on anyway.
+        ledger.record("skipped", surface="claude_hook", host="claude-code", reason="low_confidence",
+                      task_type=advice.get("task_type"), task_confidence=advice.get("task_confidence"), **context)
         return None
     ledger.route_event(
         advice, surface="claude_hook", baseline=baseline, baseline_source=baseline_source, **context

@@ -228,6 +228,30 @@ def test_nothing_pinned_asks_for_the_exchange() -> None:
     assert text == "yes Shall I search? find the loader"
 
 
+def test_a_longer_prompt_the_router_cannot_read_is_a_request_of_its_own() -> None:
+    pinned = {"model": "small", "baseline": "big"}
+    prompt = "Commit the working tree changes with a sensible message."
+    assert not policy.continues(prompt)
+    assert policy.choose_route(None, pinned, baseline="big", baseline_id="big", prompt=prompt) == (None, "unrouted")
+    # short, or opening with an assent: a follow-up that takes the pin
+    for follow_up in ("yes, go ahead", "ok", "Sure, and also update the changelog and the docs index please"):
+        assert policy.continues(follow_up)
+        _, how = policy.choose_route(None, pinned, baseline="big", baseline_id="big", prompt=follow_up)
+        assert how == "pinned"
+
+
+@pytest.mark.parametrize("question", ["did you use actrouter in the work?", "Why did you skip the tests?",
+                                      "have you committed it yet?"])
+def test_questions_about_the_agents_own_work(question: str) -> None:
+    assert policy.about_own_work(question)
+
+
+@pytest.mark.parametrize("request_", ["Did the deploy fail last night? Check the logs",
+                                      "you should fix the failing test", "what does this function do?"])
+def test_requests_are_not_questions_about_own_work(request_: str) -> None:
+    assert not policy.about_own_work(request_)
+
+
 def test_pin_keeps_the_applied_model_apart() -> None:
     p = policy.pin(advice("small"), baseline="big", baseline_source="session model", stays=False,
                    applied_model="big")
