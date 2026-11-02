@@ -168,7 +168,8 @@ Set `ACTROUTER_FAMILIES` to the vendors you can call (for example
 | `ACTROUTER_CANDIDATES` | | Explicit model-id whitelist |
 | `ACTROUTER_MODEL_STYLE` | `alias` | `id` gives Claude Code full model ids |
 | `ACTROUTER_PROMPT_ROUTING` | `delegate` | Claude Code prompt hook: `delegate`, `advise` or `off` |
-| `ACTROUTER_PROMPT_MIN_CONFIDENCE` | `0.5` | Below this, a prompt is a follow-up: it keeps the conversation's routing, else is routed on the exchange it continues |
+| `ACTROUTER_PROMPT_MIN_CONFIDENCE` | `0.5` | Below this, a short prompt or one opening with an assent is a follow-up: it keeps the conversation's routing, else is routed on the exchange it continues. A longer prompt the router cannot read is a request of its own: it is recorded `unrouted` and Claude is asked to route it itself |
+| `ACTROUTER_SUBAGENT_MIN_CONFIDENCE` | `0.5` | Below this, a subagent keeps the model it would have run on, rather than being routed on a guess |
 | `ACTROUTER_PROMPT_ADVISE_TASKS` | `chat` | Task types the prompt hook only advises on, never delegates: work that lives in the conversation, which a subagent cannot see |
 | `ACTROUTER_SUBAGENT_ROUTING` | `on` | Claude Code subagent hook switch |
 | `ACTROUTER_HOOK_PREFERENCE` | `balanced` | Hook's quality/cost trade-off |

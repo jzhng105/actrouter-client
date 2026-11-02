@@ -39,9 +39,13 @@ from actrouter_client.client import ActRouterError, env
 INSTRUCTIONS = """\
 ActRouter recommends which LLM fits a piece of work, from the work's \
 description or a function's static metadata. Use it:
-- before delegating to a subagent or starting a sizeable task: call \
-route_task with a one or two sentence description of the *kind* of work \
-(never paste code, secrets or file contents), then use `host_model`;
+- before delegating to a subagent, and before any request that will edit \
+files or take more than ~3 tool calls when no "ActRouter routed this \
+request" context came with it: call route_task with a one or two sentence \
+description of the *kind* of work (never paste code, secrets or file \
+contents), then use `host_model`. Silence from the prompt hook does not \
+mean the request was routed. If your host lists this server's tools as \
+deferred, load route_task (ToolSearch) first;
 - when writing or changing code that calls an LLM: call route_function on \
 that function and use `model` in the code;
 - prefer preference="quality" for hard debugging, design or security work \

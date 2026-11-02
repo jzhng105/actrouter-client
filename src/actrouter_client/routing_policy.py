@@ -7,7 +7,12 @@ classifies on its own words routes on them. A follow-up it cannot classify
 ("yes, go ahead") follows the routing the conversation is pinned to, and with
 nothing pinned it is routed on the exchange it continues
 (:func:`continuation_text`). Each routing decision pins the conversation
-(:func:`pin`) until a prompt routes on its own.
+(:func:`pin`) until a prompt routes on its own. Only a short prompt, or one
+that opens with an assent, counts as a follow-up (:func:`continues`): a longer
+one the router cannot read is a request of its own and stays unrouted
+(``ROUTED_ON_NONE``) rather than inheriting the pin. A question about the
+agent's own work in the conversation ("did you use ...?") is never routed and
+keeps the pin (:func:`about_own_work`).
 
 **Whether the session switches** (:func:`decide`). A recommendation is not a
 switch. ``decide`` compares the expected cost of finishing the task on the
@@ -33,6 +38,7 @@ everything in, so every decision can be replayed from its record.
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Mapping, Optional
 
@@ -43,6 +49,7 @@ from actrouter_client.ledger import ROUTE_FIELDS
 SWITCH = "switch"
 ALREADY_ON = "already_on"
 NO_ROUTE = "no_route"
+CONVERSATION = "conversation"
 FOLLOW_UP = "follow_up"
 MANUAL_MODEL = "manual_model"
 UNKNOWN_PRICING = "unknown_pricing"
@@ -55,7 +62,7 @@ GATE_SAVINGS = "gate_savings"
 
 #: every reason a Decision can carry
 REASONS = frozenset({
-    SWITCH, ALREADY_ON, NO_ROUTE, FOLLOW_UP, MANUAL_MODEL, UNKNOWN_PRICING, UNKNOWN_CONTEXT,
+    SWITCH, ALREADY_ON, NO_ROUTE, CONVERSATION, FOLLOW_UP, MANUAL_MODEL, UNKNOWN_PRICING, UNKNOWN_CONTEXT,
     GATE_CONTEXT, TRANSITION_UNSUPPORTED, TRANSITION_UNTESTED, GATE_COOLDOWN, GATE_SAVINGS,
 })
 
@@ -68,6 +75,34 @@ PIN_FIELDS = ROUTE_FIELDS
 ROUTED_ON_PROMPT = "prompt"
 ROUTED_ON_PIN = "pinned"
 ROUTED_ON_EXCHANGE = "previous exchange"
+#: the prompt is a request of its own the router cannot read: nothing applies
+ROUTED_ON_NONE = "unrouted"
+
+#: a prompt the router cannot read continues the work before it only when it
+#: is this short or opens with an assent ("yes, go ahead"); a longer one
+#: ("Commit the working tree changes with a sensible message") is a request of
+#: its own, and inheriting the previous routing misroutes it
+FOLLOW_UP_WORDS = 6
+_ASSENT = re.compile(
+    r"^(yes|yeah|yep|ok|okay|sure|please|go ahead|do it|do that|proceed|continue|sounds good|lgtm|"
+    r"let's|option|the (first|second|third|last) one)\b",
+    re.I,
+)
+
+#: a question about what the agent did in this conversation ("did you use
+#: actrouter in the work?"): only the agent that did it can answer
+_ABOUT_OWN_WORK = re.compile(r"^(why |what |how |where |when |which )?(did|have|had|were) you\b", re.I)
+
+
+def continues(prompt: str) -> bool:
+    """True when `prompt` reads as a follow-up to the work before it."""
+    return len(re.findall(r"[\w'-]+", prompt)) <= FOLLOW_UP_WORDS or bool(_ASSENT.match(prompt.strip()))
+
+
+def about_own_work(prompt: str) -> bool:
+    """True when `prompt` asks about the agent's own work in the
+    conversation: not new work, so it is not routed and keeps the pin."""
+    return bool(_ABOUT_OWN_WORK.match(prompt.strip()))
 
 
 def usable(advice: Optional[Mapping[str, Any]], min_confidence: float) -> bool:
@@ -86,11 +121,14 @@ def choose_route(
     *,
     baseline: Optional[str],
     baseline_id: Optional[str],
+    prompt: Optional[str] = None,
 ) -> tuple[Optional[dict[str, Any]], str]:
     """The routing a prompt follows: ``(advice, routed_on)``.
 
     `own` is the prompt's own advice when it was usable (see :func:`usable`),
-    else None. A follow-up takes `pinned`. A pin made against another baseline
+    else None. Given the `prompt`, one that does not read as a follow-up
+    (:func:`continues`) returns ``(None, ROUTED_ON_NONE)``: it is a request
+    the router cannot read, and nothing applies. A follow-up takes `pinned`. A pin made against another baseline
     (the user switched model since) keeps its model but loses its savings
     estimate, which was against the old baseline. ``(None,
     ROUTED_ON_EXCHANGE)`` means nothing applies yet: route the exchange the
@@ -98,6 +136,8 @@ def choose_route(
     """
     if own is not None:
         return dict(own), ROUTED_ON_PROMPT
+    if prompt is not None and not continues(prompt):
+        return None, ROUTED_ON_NONE
     if pinned:
         advice = dict(pinned)
         if pinned.get("baseline") != baseline:

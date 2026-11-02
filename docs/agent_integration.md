@@ -36,7 +36,15 @@ new kind of request: a unit of work described in text, not a function.
 MCP alone is advisory: the agent must decide to call the tool. The hooks
 are what make routing seamless in Claude Code. For subagents: the agent does nothing
 differently, and a subagent started without a model gets a routed one. A
-model the agent or user chose explicitly is never overridden.
+model the agent or user chose explicitly is never overridden. Two kinds are
+recorded as `skipped` rather than routed: a `fork`, which runs on its
+parent's model whatever `model` says, so routing it would record a switch
+that never happened; and one the router can only guess at
+(`ACTROUTER_SUBAGENT_MIN_CONFIDENCE`), which keeps the model it would have
+run on. A long brief can bury the task under incidental words, so when the
+brief classifies poorly the hook also tries the `Agent` call's short
+`description`, which usually names the work plainly, and keeps whichever
+answer the router is surer of.
 
 **Prompt routing.** Claude Code changes the session's model only on `/model`,
 the model picker or an SDK call (checked in 2.1.308: `PreModelSwitch` and
@@ -64,7 +72,9 @@ it: a subagent starts cold and cannot see either.
 **Follow-ups.** "Yes, go ahead" says nothing about the work it approves.
 A prompt that does not classify with confidence
 `ACTROUTER_PROMPT_MIN_CONFIDENCE` (0.5) or more on its own words is a
-follow-up, and it **stays pinned** to the conversation's routing, as
+follow-up *if it reads like one*: at most six words, or opening with an
+assent ("yes", "go ahead", "the second one"). Such a prompt **stays
+pinned** to the conversation's routing, as
 commercial routers pin a conversation (OpenRouter's Auto Router keeps a
 conversation on the model it chose, chiefly to keep the prompt cache warm).
 Every routing decision pins, also one that keeps the session's model, and a
@@ -81,10 +91,23 @@ ends with the proposal being approved, and the user's previous request.
 Tool results, tagged messages (command output, reminders) and sidechain
 entries are skipped. The reply is compressed to prose: code blocks dropped,
 its first sentence and its end kept. Of the routing budget, the prompt gets
-a quarter, the reply half, the previous request a quarter. If that is no
-clearer ("thanks" after small talk), the prompt is left alone. The ledger's
-`prompt` event says what was routed on (`routed_on`: `prompt`, `pinned` or
-`previous exchange`).
+a quarter, the reply half, the previous request a quarter. The ledger's
+`prompt` event says what was routed on (`routed_on`: `prompt`, `pinned`,
+`previous exchange` or `unrouted`).
+
+**Requests the router cannot read.** A longer prompt that does not classify
+is not a follow-up but a request of its own ("Commit the working tree
+changes with a sensible message"), and inheriting the pin would misroute
+it. It is recorded as an `unrouted` event, the pin is left for a real
+follow-up, and with `delegate` Claude is told to call the MCP server's
+`route_task` itself once it knows what the work is. A prompt that routes on
+neither its own words nor the exchange it continues ("thanks" after small
+talk) is recorded the same way.
+
+**Questions about the agent's own work.** "Did you use ActRouter in the
+work?" asks about this conversation, so only the model that did the work
+can answer it. It is never routed, is recorded as a `conversation` event,
+and keeps the pin.
 
 Slash commands, prompts injected by `/loop` and other non-user sources, and
 prompts in subagents are left alone.
@@ -195,7 +218,10 @@ Checked against the real tools:
   search the repository for every caller of `ledger.record`; the resumed
   turn "yes go ahead" stays pinned to the first turn's routing
   (`code_search -> haiku`, `routed_on: pinned`), and Claude runs the search
-  in a haiku subagent, recorded and measured as delegated work.
+  in a haiku subagent, recorded and measured as delegated work. "Commit the
+  working tree changes with a sensible message" in that same resumed turn
+  does not take the pin: it is recorded `unrouted` and Claude is asked to
+  route it itself.
 - Codex CLI 0.163 lists and installs the Codex plugin from
   `.agents/plugins/marketplace.json`, and registers its MCP server. When
   both marketplace files exist, Codex prefers its own over
