@@ -1,4 +1,5 @@
 import json
+import os
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable, Iterator
@@ -18,7 +19,15 @@ ENV = (
     "CLAUDE_PLUGIN_OPTION_SUBAGENT_ROUTING", "CLAUDE_PLUGIN_OPTION_PREFERENCE",
     "CLAUDE_PLUGIN_OPTION_BASELINE_MODEL", "CLAUDE_PLUGIN_OPTION_LEDGER",
     "ACTROUTER_BASELINE_MODEL", "CLAUDE_CODE_SUBAGENT_MODEL", "ANTHROPIC_MODEL", "CODEX_HOME",
+    "ACTROUTER_FEEDBACK", "ACTROUTER_LEARNING", "ACTROUTER_LEARNED", "ACTROUTER_LEARN_AGENT_CHOICE",
+    "ACTROUTER_LEARN_MIN_EVIDENCE", "ACTROUTER_LEARN_MAX_ADJUSTMENT", "ACTROUTER_LEARN_HALF_LIFE_DAYS",
+    "ACTROUTER_LEARN_WINDOW_DAYS", "ACTROUTER_LEARN_REFRESH_HOURS",
 )
+
+# Test modules build routers at import, before the fixtures below move HOME:
+# keep those from relearning from (and writing to) the real ~/.actrouter.
+# Each test then starts with the variable removed, so learning has its defaults.
+os.environ["ACTROUTER_LEARNING"] = "off"
 
 
 @pytest.fixture(scope="session")

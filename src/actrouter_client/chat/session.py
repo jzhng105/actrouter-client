@@ -13,7 +13,10 @@
 5. runs the turn, then folds what it used into the session's state
    (:class:`~actrouter_client.session_state.ChatState`) and records one
    ``turn`` event in the routing ledger, which holds both the decision and the
-   outcome.
+   outcome;
+6. leaves a work record, so the person's next prompt is read for a reaction
+   to the turn's work, and a ``/model`` soon after for agreement with the
+   routing (:mod:`actrouter_client.feedback`).
 
 Routing modes: ``shadow`` (the default) decides and records but never
 switches; ``on`` switches; ``off`` does not route at all.
@@ -26,7 +29,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional
 
-from actrouter_client import ledger
+from actrouter_client import feedback, ledger
 from actrouter_client import routing_policy as policy
 from actrouter_client import transcript
 from actrouter_client.advisor import Advisor
@@ -215,6 +218,7 @@ class RoutedSession:
     async def turn(self, prompt: str) -> TurnResult:
         assert self.state is not None
         st = self.state
+        feedback.settle(st.session_id, prompt, host=self.agent.host, surface="chat", now=self.clock())
         decision = self.decide(prompt)
         self.last_decision = decision
         before, before_host = st.current_model, st.current_host_model
@@ -288,6 +292,12 @@ class RoutedSession:
         st.last_prompt, st.last_reply = prompt, result.reply
         st.save()
         self._record(decision, result, switched, served_id, switch_error)
+        if decision.task_type:
+            feedback.begin(
+                st.session_id, host=self.agent.host, surface="chat", task_type=decision.task_type,
+                routed_model=decision.recommended_model, routed_host_model=decision.recommended_host_model,
+                session_model=served_id or st.current_model, now=now,
+            )
         return result
 
     def _record(self, decision: policy.Decision, result: TurnResult, switched: bool,
@@ -344,6 +354,8 @@ class RoutedSession:
             self.state.save()
             return
         await self.agent.set_model(host_model)
+        feedback.model_switched(self.state.session_id, host_model, host=self.agent.host, surface="chat",
+                                to_catalog_id=self.advisor.baseline_id(host_model), now=self.clock())
         self.state.manual = True
         self.state.switched(self.advisor.baseline_id(host_model) or host_model, host_model, self.clock())
         self.state.save()
