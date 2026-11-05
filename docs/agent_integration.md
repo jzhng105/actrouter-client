@@ -193,6 +193,13 @@ behind a gateway that serves other vendors.
   last reply and previous request, without code blocks. The per-session state file holds models and the routing
   decision, never the prompt.
 - `launch`: the first 600 characters of the prompt, or `--describe`.
+- With `ACTROUTER_LEARNING=on`, each routing request also carries
+  `learned`: per task type and model id, a score bias learned from this
+  machine's ledger ([learning.md](learning.md)). Never text: the ledger and
+  the user's reactions stay on the machine.
+- With `ACTROUTER_LEARN_AGENT_CHOICE=on`, the subagent hook also routes the
+  `description` of a subagent Claude started on a model of its own
+  choosing (one more metered call), to learn from the agent's choice.
 
 **The hook fails open.** Any error, timeout or malformed event produces no
 output, and the subagent runs as it would have without the hook.

@@ -16,7 +16,7 @@ from actrouter_client.hosts import Host, candidate_models, get_host
 from actrouter_client.metadata import function_metadata_from_source
 
 #: reasons worth showing; the rest are score components
-_KEEP_REASONS = ("task=", "needs=", "no candidate", "route-invariant")
+_KEEP_REASONS = ("task=", "needs=", "no candidate", "route-invariant", "learned=")
 
 
 class Advisor:

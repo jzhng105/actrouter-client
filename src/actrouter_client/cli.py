@@ -12,6 +12,7 @@
     actrouter-route report --days 30 --html savings.html
     actrouter-route upgrade              # free -> Pro, in Stripe Checkout
     actrouter-route billing              # card, invoices, cancelling
+    actrouter-route learn                # what agents' and users' responses taught routing
 
 ``launch`` routes on the agent's prompt (or ``--describe``), then replaces
 itself with the agent CLI, passing the model (``codex -m``, ``claude
@@ -109,6 +110,34 @@ def _cmd_report(args: argparse.Namespace) -> int:
         Path(args.html).write_text(format_html(summary), encoding="utf-8")
         print(f"wrote {args.html}", file=sys.stderr)
     print(json.dumps(summary, indent=2) if args.json else format_text(summary))
+    return 0
+
+
+def _cmd_learn(args: argparse.Namespace) -> int:
+    from dataclasses import replace
+    from pathlib import Path
+
+    from actrouter_client import learning
+
+    cfg = learning.LearnConfig.from_env()
+    if args.days is not None:
+        cfg = replace(cfg, window_days=float(args.days))
+    target = learning.learned_path()
+    write = not args.dry_run and learning.mode() != "off"
+    payload = learning.relearn(
+        Advisor(host="generic").catalog(), cfg=cfg,
+        source=Path(args.ledger).expanduser() if args.ledger else None,
+        target=target, write=write,
+    )
+    applied = learning.mode() == "on" and target is not None and write
+    if args.json:
+        print(json.dumps({**payload, "mode": learning.mode(), "file": str(target) if write else None,
+                          "applied": applied}, indent=2))
+    else:
+        print(learning.format_text(payload, applied=applied, target=target if write else None))
+        if learning.mode() == "shadow":
+            print("\nShadow mode: routing ignores these. ACTROUTER_LEARNING=on "
+                  "sends them with each routing request.")
     return 0
 
 
@@ -316,6 +345,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     p.add_argument("--html", help="Also write a self-contained HTML dashboard here")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=_cmd_report)
+
+    p = sub.add_parser("learn", help="Relearn routing adjustments from agents' and users' responses, and show them")
+    p.add_argument("--days", type=int, help="Look back this many days (default: $ACTROUTER_LEARN_WINDOW_DAYS or 120; 0 = all)")
+    p.add_argument("--ledger", help="Ledger file (default: $ACTROUTER_LEDGER or ~/.actrouter/routing-ledger.jsonl)")
+    p.add_argument("--dry-run", action="store_true", help="Show what would be learned without writing it")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=_cmd_learn)
 
     p = sub.add_parser("upgrade", help="Move your API key to the Pro plan (opens Stripe Checkout)")
     p.add_argument("--no-browser", action="store_true", help="Only print the link")

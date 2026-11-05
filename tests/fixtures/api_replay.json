@@ -1175,7 +1175,7 @@
  "GET /v1/task-types null": {
   "status": 200,
   "body": {
-   "version": 6,
+   "version": 7,
    "families": {
     "code": "Writing, reviewing or transforming source code.",
     "text": "Transforming or condensing natural-language text.",
@@ -1456,7 +1456,7 @@
    ],
    "estimated_cost_usd": 6e-05,
    "estimated_latency_ms": 22,
-   "request_id": "0d0a9ccea2714f14ab8dc20a7b4cbc7e",
+   "request_id": "abfaacdf0f0345c2b03b70eaa07d7092",
    "classification": {
     "task_type": "classification",
     "family": "structured",
@@ -1472,7 +1472,7 @@
      "docstring(title):classify x1",
      "returns:Literal[ x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -1528,7 +1528,7 @@
    ],
    "estimated_cost_usd": 6e-05,
    "estimated_latency_ms": 22,
-   "request_id": "b5352837a92e42ab94cadced49e3d68b",
+   "request_id": "3259432729d14769b016f30e9e6b3aa2",
    "classification": {
     "task_type": "classification",
     "family": "structured",
@@ -1544,7 +1544,7 @@
      "docstring(title):classify x1",
      "returns:Literal[ x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -1600,7 +1600,7 @@
    ],
    "estimated_cost_usd": 0.0006000000000000001,
    "estimated_latency_ms": 22,
-   "request_id": "2c3c6b1620fc401490c0b9da69f68376",
+   "request_id": "d4f86f5fde57479b98aaedca0e28ee0a",
    "classification": {
     "task_type": "translation",
     "family": "text",
@@ -1616,7 +1616,7 @@
      "name:translate x1",
      "params:locale x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -1632,13 +1632,13 @@
    "ranking": [
     {
      "model_id": "claude-haiku-5-5",
-     "score": 0.556,
+     "score": 0.5726,
      "reasons": [
       "task=code_search",
-      "task_conf=0.72",
+      "task_conf=0.98",
       "task_source=rules",
       "quality_fit=0.30",
-      "tier_fit=0.93",
+      "tier_fit=0.99",
       "cost_fit=1.00",
       "latency_fit=1.00"
      ]
@@ -1646,21 +1646,22 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "fa624425c9d944808cf2f89a34231b00",
+   "request_id": "c42d20d75600458eabf106aca8299ca0",
    "classification": {
     "task_type": "code_search",
     "family": "code",
-    "confidence": 0.725,
+    "confidence": 0.98,
     "source": "rules",
     "accepted": true,
-    "family_confidence": 0.725,
+    "family_confidence": 0.98,
     "scores": {
-     "code_search": 6.0
+     "code_search": 14.0
     },
     "evidence": [
-     "name:where x1"
+     "name:where x1",
+     "docstring(title):where is x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -1685,13 +1686,13 @@
    "ranking": [
     {
      "model_id": "claude-haiku-5-5",
-     "score": 0.556,
+     "score": 0.5726,
      "reasons": [
       "task=code_search",
-      "task_conf=0.72",
+      "task_conf=0.98",
       "task_source=rules",
       "quality_fit=0.30",
-      "tier_fit=0.93",
+      "tier_fit=0.99",
       "cost_fit=1.00",
       "latency_fit=1.00"
      ]
@@ -1699,21 +1700,22 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "af4d8cb050784a27a913f9b3af907081",
+   "request_id": "f3738404057443be8d380adf4e0abeef",
    "classification": {
     "task_type": "code_search",
     "family": "code",
-    "confidence": 0.725,
+    "confidence": 0.98,
     "source": "rules",
     "accepted": true,
-    "family_confidence": 0.725,
+    "family_confidence": 0.98,
     "scores": {
-     "code_search": 6.0
+     "code_search": 14.0
     },
     "evidence": [
-     "name:where x1"
+     "name:where x1",
+     "docstring(title):where is x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -1738,52 +1740,52 @@
    "ranking": [
     {
      "model_id": "claude-haiku-4-5",
-     "score": 0.573,
+     "score": 0.6051,
      "reasons": [
-      "task=debugging",
-      "task_conf=0.16",
+      "task=code_generation",
+      "task_conf=0.18",
       "task_source=classifier",
-      "quality_fit=0.40",
-      "tier_fit=0.96",
+      "quality_fit=0.45",
+      "tier_fit=0.95",
       "cost_fit=0.41",
       "latency_fit=1.00"
      ]
     }
    ],
    "estimated_cost_usd": 0.12,
-   "estimated_latency_ms": 10560,
-   "request_id": "fbb46d5ec5de4afca489575729bf126e",
+   "estimated_latency_ms": 9680,
+   "request_id": "78bd244ffd244675803183031391b65d",
    "classification": {
-    "task_type": "debugging",
+    "task_type": "code_generation",
     "family": "code",
-    "confidence": 0.1621,
+    "confidence": 0.1832,
     "source": "classifier",
     "accepted": false,
-    "family_confidence": 0.1621,
+    "family_confidence": 0.1832,
     "scores": {
-     "debugging": 0.162,
-     "code_generation": 0.162,
-     "math": 0.132,
-     "documentation": 0.112,
-     "planning": 0.084,
-     "summarization": 0.073
+     "code_generation": 0.183,
+     "debugging": 0.182,
+     "math": 0.128,
+     "documentation": 0.094,
+     "planning": 0.089,
+     "summarization": 0.065
     },
     "evidence": [
-     "classifier: debugging p=0.16"
+     "classifier: code_generation p=0.18"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
     "model_id": "claude-opus-5-5",
     "known": true,
     "estimated_cost_usd": 0.48,
-    "estimated_latency_ms": 30720
+    "estimated_latency_ms": 28160
    },
    "estimated_savings_usd": 0.36,
    "token_estimate": {
-    "prompt_tokens": 90000,
-    "completion_tokens": 6000,
+    "prompt_tokens": 80000,
+    "completion_tokens": 8000,
     "basis": "prior"
    }
   }
@@ -1836,7 +1838,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "86a6113d855041849e3d96e38139e74c",
+   "request_id": "33701cb976954f2cb15964f255e063a6",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -1853,7 +1855,7 @@
      "docstring(title):failing test x1",
      "docstring(title):fix the x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -1878,12 +1880,12 @@
    "ranking": [
     {
      "model_id": "claude-haiku-5-5",
-     "score": 0.7735,
+     "score": 0.7626,
      "reasons": [
       "task=chat",
-      "task_conf=0.86",
+      "task_conf=0.82",
       "task_source=classifier",
-      "quality_fit=0.64",
+      "quality_fit=0.63",
       "tier_fit=0.96",
       "cost_fit=1.00",
       "latency_fit=1.00"
@@ -1892,25 +1894,25 @@
    ],
    "estimated_cost_usd": 0.0055,
    "estimated_latency_ms": 4730,
-   "request_id": "5effac7cd6a84ffabe7e009df265ed88",
+   "request_id": "d206652ce99c4cf7baf116ed033a7049",
    "classification": {
     "task_type": "chat",
     "family": "dialogue",
-    "confidence": 0.8578,
+    "confidence": 0.8226,
     "source": "classifier",
     "accepted": true,
-    "family_confidence": 0.8578,
+    "family_confidence": 0.8226,
     "scores": {
-     "chat": 0.858,
-     "qa": 0.03,
-     "planning": 0.027,
-     "tool_use": 0.013,
-     "math": 0.01
+     "chat": 0.823,
+     "planning": 0.018,
+     "qa": 0.015,
+     "math": 0.009,
+     "tool_use": 0.009
     },
     "evidence": [
-     "classifier: chat p=0.86"
+     "classifier: chat p=0.82"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -1949,7 +1951,7 @@
    ],
    "estimated_cost_usd": 0.065,
    "estimated_latency_ms": 4950,
-   "request_id": "acca6c4df0e54d9a853aeac27b1244b3",
+   "request_id": "c380b05361904a27ab3b51e98f4f4ad9",
    "classification": {
     "task_type": "documentation",
     "family": "text",
@@ -1963,7 +1965,7 @@
     "evidence": [
      "docstring(title):release notes x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2002,7 +2004,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "f6c81cbcffd5453a950a1f6fb531981c",
+   "request_id": "93d9607e695e40e59c04ea14fcc3d17c",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2014,7 +2016,7 @@
     "evidence": [
      "classifier: unknown p=0.95"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2053,7 +2055,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "4b949ff6220f47628e66bb9dcb98839c",
+   "request_id": "bdb938af7dfb4002b140d66173c33282",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2065,7 +2067,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2104,7 +2106,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "8013df57effb458a8396e32b62c0fc31",
+   "request_id": "608ee333e09a4b79b983dcc9b327c3a6",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2116,7 +2118,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2141,13 +2143,13 @@
    "ranking": [
     {
      "model_id": "claude-haiku-5-5",
-     "score": 0.556,
+     "score": 0.5726,
      "reasons": [
       "task=code_search",
-      "task_conf=0.72",
+      "task_conf=0.98",
       "task_source=rules",
       "quality_fit=0.30",
-      "tier_fit=0.93",
+      "tier_fit=0.99",
       "cost_fit=1.00",
       "latency_fit=1.00"
      ]
@@ -2155,21 +2157,22 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "8f3a67b230f74fddad408bed0f2fbf79",
+   "request_id": "8110bd99426b431d9edad4ef859f6d8c",
    "classification": {
     "task_type": "code_search",
     "family": "code",
-    "confidence": 0.725,
+    "confidence": 0.98,
     "source": "rules",
     "accepted": true,
-    "family_confidence": 0.725,
+    "family_confidence": 0.98,
     "scores": {
-     "code_search": 6.0
+     "code_search": 14.0
     },
     "evidence": [
-     "name:where x1"
+     "name:where x1",
+     "docstring(title):where is x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2208,7 +2211,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "11b3fa66399244c7917ec1ce5be93684",
+   "request_id": "9664edb139b5420c8ca2899a6ef1974e",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2217,13 +2220,14 @@
     "accepted": true,
     "family_confidence": 0.98,
     "scores": {
-     "code_search": 12.0
+     "code_search": 20.0
     },
     "evidence": [
      "docstring(title):search the x1",
-     "docstring(title):the repo x1"
+     "docstring(title):the repo x1",
+     "docstring(title):where is x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2262,7 +2266,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "9848fde641db4844bb62dc923f17739f",
+   "request_id": "e4308c0fab9c41cb829be2e752560ac4",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2272,9 +2276,9 @@
     "family_confidence": 0.0,
     "scores": {},
     "evidence": [
-     "classifier: unknown p=0.96"
+     "classifier: unknown p=0.97"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2313,7 +2317,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "5053ad8800bf4fd0908fe5c8a0236cea",
+   "request_id": "754fb844f83946d3b081196840b97662",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2325,7 +2329,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2364,7 +2368,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "31c9866f1f474c1cba3dac2e943da02e",
+   "request_id": "14a426acc604468f9009420337eeb987",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2378,7 +2382,7 @@
     "evidence": [
      "declared: task_kind=code_search"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2417,7 +2421,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "327f5b0508f741e3886f89bb4f2a2485",
+   "request_id": "c1658c568ce44119b115a8d3ed977c47",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -2431,7 +2435,7 @@
     "evidence": [
      "name:failing x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2456,13 +2460,13 @@
    "ranking": [
     {
      "model_id": "claude-haiku-5-5",
-     "score": 0.556,
+     "score": 0.5726,
      "reasons": [
       "task=code_search",
-      "task_conf=0.72",
+      "task_conf=0.98",
       "task_source=rules",
       "quality_fit=0.30",
-      "tier_fit=0.93",
+      "tier_fit=0.99",
       "cost_fit=1.00",
       "latency_fit=1.00"
      ]
@@ -2470,21 +2474,22 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "78c90d941d414b5197512adc3ff7eb46",
+   "request_id": "c46a004c2d6641418b26892996b35628",
    "classification": {
     "task_type": "code_search",
     "family": "code",
-    "confidence": 0.725,
+    "confidence": 0.98,
     "source": "rules",
     "accepted": true,
-    "family_confidence": 0.725,
+    "family_confidence": 0.98,
     "scores": {
-     "code_search": 6.0
+     "code_search": 14.0
     },
     "evidence": [
-     "name:where x1"
+     "name:where x1",
+     "docstring(title):where is x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2523,7 +2528,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "f74669cca626466e88be7c6e84468fb7",
+   "request_id": "33bcf22800994c24a4f0edf8a9f0975b",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2535,7 +2540,7 @@
     "evidence": [
      "classifier: unknown p=0.98"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2574,7 +2579,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "50ae3358ca204f65a182afd5e9d3f0bf",
+   "request_id": "4c1882fbd84b4a9cb6d5fc890bb47f5f",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2590,7 +2595,7 @@
      "name:where x1",
      "docstring(title):find where x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2655,7 +2660,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "7cff5bf8a6c24d2aacb88022c73174eb",
+   "request_id": "097040b613db4e4a9bb1ac87ae800597",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2664,8 +2669,7 @@
     "accepted": true,
     "family_confidence": 0.98,
     "scores": {
-     "code_search": 36.0,
-     "extraction": 8.0
+     "code_search": 36.0
     },
     "evidence": [
      "name:search x1",
@@ -2674,7 +2678,7 @@
      "docstring(title):usages of x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": {
@@ -2684,6 +2688,235 @@
     "estimated_latency_ms": 5760
    },
    "estimated_savings_usd": 0.076,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-haiku-5-5\",\"claude-haiku-4-5\",\"claude-sonnet-5-5\"],\"learned\":{\"code_search\":{\"claude-haiku-5-5\":-0.12}},\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find where the config is loaded\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.504,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=0.76",
+      "cost_fit=0.23",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.455,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00",
+      "learned=-0.118"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.4361,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.00",
+      "latency_fit=0.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.04,
+   "estimated_latency_ms": 3520,
+   "request_id": "5655c66ed9de4dcebc4ac144251c3ffd",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 24.0
+    },
+    "evidence": [
+     "name:find x1",
+     "name:where x1",
+     "docstring(title):find where x1"
+    ],
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-haiku-5-5\",\"claude-haiku-4-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find where the config is loaded\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.504,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=0.76",
+      "cost_fit=0.23",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.4361,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.00",
+      "latency_fit=0.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "6f9e138834764f669454da11d4cb1a11",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 24.0
+    },
+    "evidence": [
+     "name:find x1",
+     "name:where x1",
+     "docstring(title):find where x1"
+    ],
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"learned\":{\"code_search\":{\"claude-haiku-4-5\":-0.12,\"claude-haiku-5-5\":-0.12}},\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find where the config is loaded\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-4-6",
+     "score": 0.4709,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.13",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.08,
+   "estimated_latency_ms": 5760,
+   "request_id": "d2ca3e1e5517491ebe078fd4bd4f8429",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 24.0
+    },
+    "evidence": [
+     "name:find x1",
+     "name:where x1",
+     "docstring(title):find where x1"
+    ],
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
    "token_estimate": {
     "prompt_tokens": 30000,
     "completion_tokens": 2000,
@@ -2713,7 +2946,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "157fbdfff235498a96b946e8a16bd6ce",
+   "request_id": "2589e379e741402a90d80a2f111d84e1",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -2730,7 +2963,58 @@
      "docstring(title):debug x1",
      "docstring(title):flaky x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 90000,
+    "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Debug the flaky integration test in the auth module\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-sonnet-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.6077,
+     "reasons": [
+      "task=debugging",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.99",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.24,
+   "estimated_latency_ms": 17280,
+   "request_id": "81374fcffde6415aaac9905dcaf76d87",
+   "classification": {
+    "task_type": "debugging",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "debugging": 36.0
+    },
+    "evidence": [
+     "name:debug x1",
+     "name:flaky x1",
+     "docstring(title):debug x1",
+     "docstring(title):flaky x1"
+    ],
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -2790,7 +3074,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "e61c9b2f77eb4173b5a1cbfa40439831",
+   "request_id": "e8f0d0dd74b849868aa542b05263daab",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -2807,7 +3091,7 @@
      "docstring(title):debug x1",
      "docstring(title):flaky x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -2841,7 +3125,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "a3f3c49dbaef4ea8b847a6f5b5d8004a",
+   "request_id": "826c458298f947a5b46569d49d7abaa1",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2855,7 +3139,182 @@
     "evidence": [
      "declared: task_kind=code_search"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find retry policy\",\"task_kind\":\"code_search\",\"title\":\"Find retry policy\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5707,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.95",
+      "task_source=declared",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "2d4d4c2c74f84befa85c0906d682f312",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.95,
+    "source": "declared",
+    "accepted": true,
+    "family_confidence": 0.95,
+    "scores": {
+     "code_search": 0.95
+    },
+    "evidence": [
+     "declared: task_kind=code_search"
+    ],
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find where the config is loaded\"},\"top_k\":3}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5197,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=0.76",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    },
+    {
+     "model_id": "claude-sonnet-5",
+     "score": 0.4799,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.50",
+      "tier_fit=0.51",
+      "cost_fit=0.23",
+      "latency_fit=0.54"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "0b99fe14624540b1abf6e50a73035a31",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 24.0
+    },
+    "evidence": [
+     "name:find x1",
+     "name:where x1",
+     "docstring(title):find where x1"
+    ],
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 30000,
+    "completion_tokens": 2000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"Find where the retry policy is configured in the codebase\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-5-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-5-5",
+     "score": 0.5726,
+     "reasons": [
+      "task=code_search",
+      "task_conf=0.98",
+      "task_source=rules",
+      "quality_fit=0.30",
+      "tier_fit=0.99",
+      "cost_fit=1.00",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.004,
+   "estimated_latency_ms": 3520,
+   "request_id": "3e5d4d6d338f4d6a9749e0b54cd7a373",
+   "classification": {
+    "task_type": "code_search",
+    "family": "code",
+    "confidence": 0.98,
+    "source": "rules",
+    "accepted": true,
+    "family_confidence": 0.98,
+    "scores": {
+     "code_search": 28.0
+    },
+    "evidence": [
+     "name:find x1",
+     "name:where x1",
+     "docstring(title):find where x1",
+     "docstring(title):the codebase x1"
+    ],
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -2889,7 +3348,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "9353abfc3bdb495e8434542fd67dcb30",
+   "request_id": "2221afd0a905499e9799046c335dbdbb",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -2903,7 +3362,7 @@
     "evidence": [
      "name:find x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -2937,7 +3396,7 @@
    ],
    "estimated_cost_usd": 0.055,
    "estimated_latency_ms": 4730,
-   "request_id": "5f0d253463b34c3dab6017e6e78f30e0",
+   "request_id": "b8fd37fd1fda4f648f8e10687e46c78e",
    "classification": {
     "task_type": "unknown",
     "family": null,
@@ -2947,9 +3406,9 @@
     "family_confidence": 0.0,
     "scores": {},
     "evidence": [
-     "classifier: unknown p=0.46"
+     "classifier: unknown p=0.57"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -2983,7 +3442,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "e9e6bad5d7054242b0f06c0d07bd3e7e",
+   "request_id": "6babc65a55c449e19e2432748c8a3bbe",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -3001,7 +3460,7 @@
      "docstring(title):usages of x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -3061,7 +3520,7 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "1b0d09d83b25401f9c659539fca1ab26",
+   "request_id": "7e065390bcd14b038c9ab7dd59089cfd",
    "classification": {
     "task_type": "code_search",
     "family": "code",
@@ -3070,8 +3529,7 @@
     "accepted": true,
     "family_confidence": 0.98,
     "scores": {
-     "code_search": 36.0,
-     "extraction": 8.0
+     "code_search": 36.0
     },
     "evidence": [
      "name:search x1",
@@ -3080,7 +3538,7 @@
      "docstring(title):usages of x1",
      "docstring(title):the repo x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -3114,7 +3572,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "9d144383baee426bb6156377cb58d306",
+   "request_id": "ce5cddea823f46b996b024579b2e92d4",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -3128,7 +3586,7 @@
     "evidence": [
      "name:failing x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -3136,6 +3594,52 @@
    "token_estimate": {
     "prompt_tokens": 90000,
     "completion_tokens": 6000,
+    "basis": "prior"
+   }
+  }
+ },
+ "POST /v1/route/task {\"candidate_models\":[\"claude-opus-4-7\",\"claude-sonnet-4-6\",\"claude-haiku-4-5\",\"claude-haiku-5-5\",\"claude-opus-4-8\",\"claude-opus-5\",\"claude-opus-5-5\",\"claude-sonnet-5\",\"claude-sonnet-5-5\"],\"preference\":\"balanced\",\"router\":\"heuristic\",\"task\":{\"description\":\"that's wrong, it's not in that file\"},\"top_k\":1}": {
+  "status": 200,
+  "body": {
+   "chosen_model": "claude-haiku-4-5",
+   "router": "heuristic",
+   "ranking": [
+    {
+     "model_id": "claude-haiku-4-5",
+     "score": 0.5836,
+     "reasons": [
+      "task=unknown",
+      "task_conf=0.00",
+      "task_source=rules",
+      "quality_fit=0.40",
+      "tier_fit=1.00",
+      "cost_fit=0.41",
+      "latency_fit=1.00"
+     ]
+    }
+   ],
+   "estimated_cost_usd": 0.055,
+   "estimated_latency_ms": 4730,
+   "request_id": "c84a26a903d346a49e03bcbf35fa6a52",
+   "classification": {
+    "task_type": "unknown",
+    "family": null,
+    "confidence": 0.0,
+    "source": "rules",
+    "accepted": false,
+    "family_confidence": 0.0,
+    "scores": {},
+    "evidence": [
+     "classifier: unknown p=0.68"
+    ],
+    "inventory_version": 7,
+    "cached": false
+   },
+   "baseline": null,
+   "estimated_savings_usd": null,
+   "token_estimate": {
+    "prompt_tokens": 40000,
+    "completion_tokens": 3000,
     "basis": "prior"
    }
   }
@@ -3148,13 +3652,13 @@
    "ranking": [
     {
      "model_id": "claude-haiku-5-5",
-     "score": 0.556,
+     "score": 0.5726,
      "reasons": [
       "task=code_search",
-      "task_conf=0.72",
+      "task_conf=0.98",
       "task_source=rules",
       "quality_fit=0.30",
-      "tier_fit=0.93",
+      "tier_fit=0.99",
       "cost_fit=1.00",
       "latency_fit=1.00"
      ]
@@ -3162,21 +3666,22 @@
    ],
    "estimated_cost_usd": 0.004,
    "estimated_latency_ms": 3520,
-   "request_id": "befba7b294a042f895f683d773f3475c",
+   "request_id": "1e1e0a3f73394d53b8a472fc6177b5f6",
    "classification": {
     "task_type": "code_search",
     "family": "code",
-    "confidence": 0.725,
+    "confidence": 0.98,
     "source": "rules",
     "accepted": true,
-    "family_confidence": 0.725,
+    "family_confidence": 0.98,
     "scores": {
-     "code_search": 6.0
+     "code_search": 14.0
     },
     "evidence": [
-     "name:where x1"
+     "name:where x1",
+     "docstring(title):where is x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -3236,7 +3741,7 @@
    ],
    "estimated_cost_usd": 0.24,
    "estimated_latency_ms": 17280,
-   "request_id": "f060b683d3484a12b006d41e369b285e",
+   "request_id": "4a6afae78ca84cf490a24df4ae5bb635",
    "classification": {
     "task_type": "debugging",
     "family": "code",
@@ -3252,7 +3757,7 @@
      "name:failing x1",
      "docstring(title):fix the x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -3286,7 +3791,7 @@
    ],
    "estimated_cost_usd": 0.009000000000000001,
    "estimated_latency_ms": 1980,
-   "request_id": "24b14fcd5cba451eab0bcbc3ad698955",
+   "request_id": "216846969f2f4b67a57e5da3ce15d29c",
    "classification": {
     "task_type": "summarization",
     "family": "text",
@@ -3301,7 +3806,7 @@
      "name:summarize x1",
      "docstring(title):summarize x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,
@@ -3374,7 +3879,7 @@
    ],
    "estimated_cost_usd": 0.096,
    "estimated_latency_ms": 12320,
-   "request_id": "5713f836be2941d2a23120930fc31bb9",
+   "request_id": "98b9a9000a6e47da9516c77abed594b7",
    "classification": {
     "task_type": "code_generation",
     "family": "code",
@@ -3389,7 +3894,7 @@
      "name:implement x1",
      "docstring(title):implement a x1"
     ],
-    "inventory_version": 6,
+    "inventory_version": 7,
     "cached": false
    },
    "baseline": null,

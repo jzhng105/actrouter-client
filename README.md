@@ -62,6 +62,13 @@ session's own model before each turn when the switch is worth its cache
 and context cost. It starts in shadow mode: it records what it would do
 without switching. See [docs/chat_routing.md](docs/chat_routing.md).
 
+The hooks and `chat` also record how you and the agent respond to routing
+(a correction, thanks, a `/model` switch, a failed subagent) as labels in
+the local ledger, and `actrouter-route learn` turns them into small,
+bounded routing adjustments. Learning starts in shadow mode;
+`ACTROUTER_LEARNING=on` sends the adjustments with each routing request.
+See [docs/learning.md](docs/learning.md).
+
 ```python
 from actrouter_client import Advisor
 

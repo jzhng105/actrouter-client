@@ -264,6 +264,10 @@ on disk to resume, so it starts afresh.
   token totals, `cost_computed_usd` (main session, from tokens and catalog
   prices) and `cost_reported_usd` (Claude Code's own figure). `/model`
   writes a `model_set` event.
+* The person's next prompt is read for a reaction to the turn's work
+  ("that's wrong", "thanks"), and a `/model` soon after a recommendation
+  for agreement with it. Only the label is recorded, as a `feedback` event,
+  for the router to learn from ([learning.md](learning.md)).
 * `actrouter-route report` sums the turns: switches, the switches shadow
   mode would have made, both costs, the decision reasons, and the
   policy's *estimated* savings. Neither cost proves a counterfactual saving:

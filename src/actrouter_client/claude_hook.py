@@ -42,6 +42,18 @@ on both models. A subagent in the background returns at launch, without
 usage, so ``SubagentStop`` records its usage from its own transcript when it
 finishes, under the agent id the launch recorded.
 
+Feedback (:mod:`actrouter_client.feedback`): each routed turn and each
+subagent leaves a work record, and the user's next prompt is read on this
+machine for a reaction to that work ("that's wrong", "thanks, works"). Only
+the label is recorded, with the task type and model of the work it judged.
+Also recorded: a delegation Claude did not follow, a ``/model`` switch soon
+after routing (agreeing with it or not), and, for a subagent Claude started
+on a model of its own choosing, the task type and the model routing would
+have chosen (only with ``ACTROUTER_LEARN_AGENT_CHOICE=on``: it routes the
+subagent's description, one more metered API call).
+The learner (:mod:`actrouter_client.learning`) turns these into routing
+adjustments.
+
 The hook fails open: any error, timeout or unexpected input means no output,
 and the subagent runs exactly as it would have without the hook.
 
@@ -87,6 +99,7 @@ from pathlib import Path
 from typing import Any, Optional, TextIO
 
 from actrouter_client import baseline as baselines
+from actrouter_client import feedback
 from actrouter_client import ledger
 from actrouter_client import routing_policy as policy
 from actrouter_client import session_state
@@ -167,6 +180,10 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+def _env_flag(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in ("1", "on", "true", "yes")
+
+
 def _advisor(advisor: Optional[Advisor]) -> Advisor:
     if advisor is not None:
         return advisor
@@ -197,8 +214,17 @@ def record_session_model(event: dict[str, Any]) -> None:
     null for the default model): the model the session now runs on."""
     if event.get("agent_id"):
         return
-    model = event.get("to_model") if event.get("hook_event_name") == "PostModelSwitch" else event.get("model")
+    switched = event.get("hook_event_name") == "PostModelSwitch"
+    model = event.get("to_model") if switched else event.get("model")
     _save_state(event.get("session_id"), "model", {"model": str(model)} if model else None)
+    if switched and model and feedback.enabled():
+        # Soon after routing, the user's switch says whether they agreed with it.
+        try:
+            catalog_id = _advisor(None).baseline_id(str(model))
+        except Exception:  # noqa: BLE001 - feedback is best effort
+            catalog_id = None
+        feedback.model_switched(event.get("session_id"), str(model), host="claude-code",
+                                surface="prompt_hook", to_catalog_id=catalog_id)
 
 
 def _unrouted(session_id: Any, mode: str) -> Optional[dict[str, Any]]:
@@ -225,8 +251,7 @@ def _unrouted(session_id: Any, mode: str) -> Optional[dict[str, Any]]:
 def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional[dict[str, Any]]:
     """The hook's JSON answer for one UserPromptSubmit `event`, or None to
     leave the prompt alone."""
-    mode = os.environ.get("ACTROUTER_PROMPT_ROUTING", "delegate").strip().lower()
-    if mode not in PROMPT_MODES or event.get("agent_id"):
+    if event.get("agent_id"):
         return None
     session_id = event.get("session_id")
     prompt = str(event.get("prompt") or "").strip()
@@ -235,6 +260,11 @@ def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Op
         return None
     if _is_harness_message(prompt):
         return None  # and the conversation keeps its pin: the user asked for nothing
+    # The user's reaction to the previous turn's work, read here and never stored.
+    feedback.settle(session_id, prompt, host="claude-code", surface="prompt_hook")
+    mode = os.environ.get("ACTROUTER_PROMPT_ROUTING", "delegate").strip().lower()
+    if mode not in PROMPT_MODES:
+        return None
 
     advisor = _advisor(advisor)
     prompt_chars = _env_int("ACTROUTER_HOOK_PROMPT_CHARS", PROMPT_HOOK_CHARS)
@@ -285,13 +315,19 @@ def route_prompt(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Op
     # model, so follow-ups stay with it until a prompt routes on its own.
     _save_prompt_route(session_id, policy.pin(
         advice, baseline=baseline, baseline_source=baseline_source, stays=stays))
-    if stays:
-        return None  # the session already runs on the model that fits
 
     # work in the conversation itself: tell the user, do not hand it to a subagent
     advise_only = {t.strip() for t in os.environ.get("ACTROUTER_PROMPT_ADVISE_TASKS", ADVISE_TASKS).split(",")}
     if mode == "delegate" and advice.get("task_type") in advise_only:
         mode = "advise"
+    feedback.begin(
+        session_id, host="claude-code", surface="prompt_hook", task_type=advice.get("task_type"),
+        routed_model=advice["model"], routed_host_model=model,
+        session_model=advisor.baseline_id(current) or current, request_id=advice.get("request_id"),
+        delegate=mode == "delegate" and not stays,
+    )
+    if stays:
+        return None  # the session already runs on the model that fits
 
     ledger.record(
         "prompt", surface="prompt_hook", host="claude-code", session_id=session_id, mode=mode,
@@ -364,54 +400,32 @@ def decide(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional
             # Claude handed the user's request to the model it was routed to
             ledger.route_event(route, surface="prompt_hook", baseline=route.get("baseline"),
                                baseline_source=str(route.get("baseline_source")), **context)
+            feedback.note(context["session_id"], task_type=route.get("task_type"), model=route.get("model"),
+                          surface="prompt_hook", request_id=route.get("request_id"))
         elif offered := ledger.claim(os.environ.get("CLAUDE_PROJECT_DIR") or event.get("cwd"), model):
             # Claude asked route_task and started the subagent on its answer
             ledger.route_event(offered, surface="mcp", baseline=offered.get("baseline"),
                                baseline_source=str(offered.get("baseline_source")),
                                claims=offered.get("request_id"), **context)
+            feedback.note(context["session_id"], task_type=offered.get("task_type"),
+                          model=offered.get("model"), surface="mcp", request_id=offered.get("request_id"))
         else:
             ledger.record("skipped", surface="claude_hook", host="claude-code",
-                          reason="explicit_model", model=model, **context)
+                          reason="explicit_model", model=model,
+                          **_agent_choice(event, tool_input, model, advisor), **context)
         return None
     description = str(tool_input.get("description") or "").strip()
     prompt = str(tool_input.get("prompt") or "").strip()
-    subagent = str(tool_input.get("subagent_type") or "").strip()
     if not description and not prompt:
         return None
 
     advisor = _advisor(advisor)
-    prompt_chars = _env_int("ACTROUTER_HOOK_PROMPT_CHARS", 0)
-    text = description or prompt[:120]
-    if prompt_chars > 0 and prompt:
-        text = f"{text}. {prompt[:prompt_chars]}"
-
     baseline, baseline_source = baselines.claude_code_subagent(event)
-
-    def ask(words: str) -> dict[str, Any]:
-        return advisor.for_task(
-            words[:2000],
-            title=description[:120] or None,
-            task_kind=SUBAGENT_TASKS.get(subagent.lower()),
-            preference=os.environ.get("ACTROUTER_HOOK_PREFERENCE", "balanced"),
-            top_k=1,
-            baseline=baseline,
-        )
-
-    def sure(answer: dict[str, Any]) -> float:
-        return float(answer.get("task_confidence") or 0.0)
-
-    min_confidence = _env_float("ACTROUTER_SUBAGENT_MIN_CONFIDENCE", 0.5)
-    advice = ask(text)
-    if sure(advice) < min_confidence and description and text != description:
-        # A long brief can bury the task under incidental words; its short
-        # description often names the work plainly ("Write AWS CDK infrastructure").
-        by_description = ask(description)
-        if sure(by_description) > sure(advice):
-            advice = by_description
+    advice = _subagent_advice(advisor, tool_input, baseline)
     model = advice.get("host_model")
     if not model:
         return None
-    if sure(advice) < min_confidence:
+    if _sure(advice) < _env_float("ACTROUTER_SUBAGENT_MIN_CONFIDENCE", 0.5):
         # A guess: leave the subagent on the model it would run on anyway.
         ledger.record("skipped", surface="claude_hook", host="claude-code", reason="low_confidence",
                       task_type=advice.get("task_type"), task_confidence=advice.get("task_confidence"), **context)
@@ -419,6 +433,8 @@ def decide(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional
     ledger.route_event(
         advice, surface="claude_hook", baseline=baseline, baseline_source=baseline_source, **context
     )
+    feedback.note(context["session_id"], task_type=advice.get("task_type"), model=advice.get("model"),
+                  surface="claude_hook", request_id=advice.get("request_id"))
 
     output: dict[str, Any] = {
         "hookEventName": "PreToolUse",
@@ -431,6 +447,69 @@ def decide(event: dict[str, Any], advisor: Optional[Advisor] = None) -> Optional
             f"ActRouter: {advice.get('task_type')} -> {advice['model']}"
         )
     return {"hookSpecificOutput": output}
+
+
+def _sure(advice: dict[str, Any]) -> float:
+    return float(advice.get("task_confidence") or 0.0)
+
+
+def _subagent_advice(advisor: Advisor, tool_input: dict[str, Any], baseline: Optional[str]) -> dict[str, Any]:
+    """Routing for the work an ``Agent`` call describes."""
+    description = str(tool_input.get("description") or "").strip()
+    prompt = str(tool_input.get("prompt") or "").strip()
+    subagent = str(tool_input.get("subagent_type") or "").strip()
+    prompt_chars = _env_int("ACTROUTER_HOOK_PROMPT_CHARS", 0)
+    text = description or prompt[:120]
+    if prompt_chars > 0 and prompt:
+        text = f"{text}. {prompt[:prompt_chars]}"
+
+    def ask(words: str) -> dict[str, Any]:
+        return advisor.for_task(
+            words[:2000],
+            title=description[:120] or None,
+            task_kind=SUBAGENT_TASKS.get(subagent.lower()),
+            preference=os.environ.get("ACTROUTER_HOOK_PREFERENCE", "balanced"),
+            top_k=1,
+            baseline=baseline,
+        )
+
+    advice = ask(text)
+    if _sure(advice) < _env_float("ACTROUTER_SUBAGENT_MIN_CONFIDENCE", 0.5) and description and text != description:
+        # A long brief can bury the task under incidental words; its short
+        # description often names the work plainly ("Write AWS CDK infrastructure").
+        by_description = ask(description)
+        if _sure(by_description) > _sure(advice):
+            advice = by_description
+    return advice
+
+
+def _agent_choice(event: dict[str, Any], tool_input: dict[str, Any], model: str,
+                  advisor: Optional[Advisor]) -> dict[str, Any]:
+    """For a subagent Claude started on a model of its own choosing: the
+    work's task type and the model routing would have chosen, so the learner
+    can weigh the agent's choice against the router's. It sends the brief to
+    the API as one more routing call, which counts toward the plan, so only
+    with ``ACTROUTER_LEARN_AGENT_CHOICE=on`` and feedback on; never raises."""
+    if not feedback.enabled() or not _env_flag("ACTROUTER_LEARN_AGENT_CHOICE"):
+        return {}
+    try:
+        advisor = _advisor(advisor)
+        if not (tool_input.get("description") or tool_input.get("prompt")):
+            return {}
+        advice = _subagent_advice(advisor, tool_input, None)
+    except Exception:  # noqa: BLE001 - recording a choice must never block the subagent
+        return {}
+    chosen = advisor.baseline_id(model)
+    if _sure(advice) < _env_float("ACTROUTER_SUBAGENT_MIN_CONFIDENCE", 0.5) or not chosen:
+        return {}
+    feedback.note(event.get("session_id"), task_type=advice.get("task_type"), model=chosen,
+                  surface="agent_choice")
+    return {
+        "task_type": advice.get("task_type"),
+        "task_confidence": advice.get("task_confidence"),
+        "routed_model": advice.get("model"),
+        "chosen_model": chosen,
+    }
 
 
 def _agent_id(value: Any) -> Optional[str]:

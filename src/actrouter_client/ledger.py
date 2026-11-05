@@ -15,7 +15,15 @@ Each line is one JSON event in ``~/.actrouter/routing-ledger.jsonl`` (or
              The work Claude then hands to that model is recorded as a
              ``route`` with ``surface: prompt_hook``;
 ``outcome``  a routed subagent finished: the model it actually ran on and
-             its real token usage, from Claude Code's ``PostToolUse`` event.
+             its real token usage, from Claude Code's ``PostToolUse`` event;
+``feedback`` how the user or the agent responded to routing: ``signal`` is
+             ``correction``, ``approval``, ``declined``, ``accepted`` or
+             ``override``, with the task type and model it is about
+             (:mod:`actrouter_client.feedback`). An ``explicit_model``
+             ``skipped`` event also carries the task type, the model routing
+             would have chosen (``routed_model``) and the agent's
+             (``chosen_model``). :mod:`actrouter_client.learning` turns these
+             into routing adjustments.
 
 Advice from the MCP ``route_task`` tool is a ``route`` without a tool call:
 the agent then starts the subagent with that model itself. So the MCP

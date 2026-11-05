@@ -103,6 +103,13 @@ class Router(Protocol):
     def list_task_types(self) -> dict[str, Any]: ...
 
 
+#: request fields an older deployment may reject, and what the response then says
+_OPTIONAL_FIELDS = {
+    "baseline_model": ("baseline", "this deployment predates baseline_model; no server-side estimate"),
+    "learned": ("learned", "this deployment predates learned; routed without learned adjustments"),
+}
+
+
 def _body(**fields: Any) -> dict[str, Any]:
     return {k: v for k, v in fields.items() if v is not None}
 
@@ -134,7 +141,7 @@ class HttpRouter:
     ):
         body = _body(
             function=function, router=router, candidate_models=candidate_models,
-            top_k=top_k, baseline_model=baseline_model,
+            top_k=top_k, baseline_model=baseline_model, learned=self._learned(),
         )
         return self._post_route("/v1/route", body)
 
@@ -145,6 +152,7 @@ class HttpRouter:
         body = _body(
             task=task, router=router, preference=preference,
             candidate_models=candidate_models, top_k=top_k, baseline_model=baseline_model,
+            learned=self._learned(),
         )
         try:
             return self._post_route("/v1/route/task", body)
@@ -171,17 +179,33 @@ class HttpRouter:
         resp["compat"] = "routed via /v1/route: this deployment predates /v1/route/task"
         return resp
 
+    def _learned(self) -> Optional[dict[str, dict[str, float]]]:
+        """The routing adjustments this machine learned, for the request's
+        ``learned`` field: only when ``ACTROUTER_LEARNING=on`` and there are
+        some (:func:`actrouter_client.learning.activate`, which also relearns
+        them when stale)."""
+        from actrouter_client import learning
+
+        return learning.activate(self.list_models)
+
     def _post_route(self, path: str, body: dict[str, Any]) -> dict[str, Any]:
         """POST a routing request. A deployment that predates `baseline_model`
-        rejects it as an unknown field (422); route without it rather than
-        fail, and say so -- the baseline is then compared client-side only."""
-        try:
-            return self._request("POST", path, body)
-        except ActRouterError as exc:
-            if exc.status != 422 or "baseline_model" not in str(exc) or "baseline_model" not in body:
-                raise
-        resp = self._request("POST", path, {k: v for k, v in body.items() if k != "baseline_model"})
-        resp["compat_baseline"] = "this deployment predates baseline_model; no server-side estimate"
+        or `learned` rejects it as an unknown field (422); route without it
+        rather than fail, and say so -- the baseline is then compared
+        client-side only, and learned adjustments are not applied."""
+        dropped: list[str] = []
+        while True:
+            try:
+                resp = self._request("POST", path, body)
+                break
+            except ActRouterError as exc:
+                field = next((f for f in _OPTIONAL_FIELDS if f in body and f in str(exc)), None)
+                if exc.status != 422 or field is None:
+                    raise
+            body = {k: v for k, v in body.items() if k != field}
+            dropped.append(field)
+        for field in dropped:
+            resp[f"compat_{_OPTIONAL_FIELDS[field][0]}"] = _OPTIONAL_FIELDS[field][1]
         return resp
 
     def list_models(self):
